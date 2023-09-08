@@ -17,7 +17,7 @@ public class FuncionarioTest {
         String nome = funcionario.getNome();
 
         // Assert
-        Assert.assertEquals(rendimentoEsperado, rendimentos);
+        Assert.assertEquals(rendimentoEsperado, rendimentos, 0);
         Assert.assertEquals(nomeEsperado, nome);
     }
     @Test

@@ -11,11 +11,11 @@ public class FuncionarioAssalariadoTest {
         // Arrange
         Funcionario funcionario = new Funcionario("12345678", "Teste", "da Silva", "123.456.789-10", 30, 'B', "teste.dasilva@gmail.com", "(51) 9 9988-7766");
         FuncionarioAssalariado funcionarioAssalariado = new FuncionarioAssalariado(funcionario, 2000);
-        Double rendimentoEsperado = 2000.0;
+        double rendimentoEsperado = 2000.0;
         String nomeEsperado = "Teste";
 
         // Act
-        Double rendimentos = funcionarioAssalariado.getRendimentos();
+        double rendimentos = funcionarioAssalariado.getRendimentos();
         String nome = funcionario.getNome();
 
         // Assert

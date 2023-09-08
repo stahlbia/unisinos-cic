@@ -14,7 +14,7 @@ public class FuncionarioComissionadoBaseSalario extends FuncionarioComissionado{
 
     @Override
     public double getRendimentos() {
-        return super.getRendimentos() + salarioFixo;
+        return (super.getRendimentos() + salarioFixo);
     }
 
     // Get e Set

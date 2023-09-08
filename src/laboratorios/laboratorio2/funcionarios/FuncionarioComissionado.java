@@ -1,7 +1,5 @@
 package laboratorios.laboratorio2.funcionarios;
 
-import java.text.DecimalFormat;
-
 public class FuncionarioComissionado extends Funcionario{
     // Atributos
     private double taxaComissao;
@@ -25,9 +23,8 @@ public class FuncionarioComissionado extends Funcionario{
     // Métodos
 
     @Override
-    public String getRendimentos() {
-        DecimalFormat df = new DecimalFormat("R$ #,###.00");
-        return df.format(vendasBrutas * taxaComissao);
+    public double getRendimentos() {
+        return vendasBrutas * taxaComissao;
     }
 
     // Get e Set

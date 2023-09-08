@@ -1,7 +1,5 @@
 package laboratorios.laboratorio2.funcionarios;
 
-import java.text.DecimalFormat;
-
 public class Funcionario {
     // Atributos
     private String idFuncionario;
@@ -26,9 +24,8 @@ public class Funcionario {
     }
 
     // Métodos
-    public String getRendimentos() {
-        DecimalFormat df = new DecimalFormat("R$ #,##0.00");
-        return df.format(0.00);
+    public double getRendimentos() {
+        return 0.00;
     }
 
     // Get e Set

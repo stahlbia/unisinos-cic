@@ -11,15 +11,15 @@ public class FuncionarioAssalariadoTest {
         // Arrange
         Funcionario funcionario = new Funcionario("12345678", "Teste", "da Silva", "123.456.789-10", 30, 'B', "teste.dasilva@gmail.com", "(51) 9 9988-7766");
         FuncionarioAssalariado funcionarioAssalariado = new FuncionarioAssalariado(funcionario, 2000);
-        String rendimentoEsperado = "R$ 2.000,00";
+        Double rendimentoEsperado = 2000.0;
         String nomeEsperado = "Teste";
 
         // Act
-        String rendimentos = funcionarioAssalariado.getRendimentos();
+        Double rendimentos = funcionarioAssalariado.getRendimentos();
         String nome = funcionario.getNome();
 
         // Assert
-        Assert.assertEquals(rendimentos, rendimentoEsperado);
+        Assert.assertEquals(rendimentos, rendimentoEsperado, 0);
         Assert.assertEquals(nome, nomeEsperado);
     }
 }

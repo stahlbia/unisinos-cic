@@ -1,7 +1,5 @@
 package laboratorios.laboratorio2.funcionarios;
 
-import java.text.DecimalFormat;
-
 public class FuncionarioHorista extends Funcionario{
     // Atributos
     private double salarioPorHora;
@@ -25,12 +23,11 @@ public class FuncionarioHorista extends Funcionario{
     // Métodos
 
     @Override
-    public String getRendimentos() {
-        DecimalFormat df = new DecimalFormat("R$ #,###.00");
+    public double getRendimentos() {
         if (horasTrabalhadas <= 40) {
-            return df.format(horasTrabalhadas * salarioPorHora);
+            return horasTrabalhadas * salarioPorHora;
         }
-        return df.format(40 * salarioPorHora + (horasTrabalhadas - 40) * salarioPorHora * 1.5);
+        return 40 * salarioPorHora + (horasTrabalhadas - 40) * salarioPorHora * 1.5;
     }
 
     // Get e Set

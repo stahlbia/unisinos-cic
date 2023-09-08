@@ -1,7 +1,5 @@
 package laboratorios.laboratorio2.funcionarios;
 
-import java.text.DecimalFormat;
-
 public class FuncionarioAssalariado extends Funcionario{
     // Atributos
     private double salarioSemanal;
@@ -22,9 +20,8 @@ public class FuncionarioAssalariado extends Funcionario{
 
     // Métodos
     @Override
-    public String getRendimentos() {
-        DecimalFormat df = new DecimalFormat("R$ #,###.00");
-        return df.format(salarioSemanal);
+    public double getRendimentos() {
+        return salarioSemanal;
     }
 
     // Get e Set

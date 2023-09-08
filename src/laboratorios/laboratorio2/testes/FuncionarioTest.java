@@ -9,11 +9,11 @@ public class FuncionarioTest {
     public void deveCriarUmFuncionarioGenericoCorretamente() {
         // Arrange
         Funcionario funcionario = new Funcionario("12345678", "Teste", "da Silva", "123.456.789-10", 30, 'B', "teste.dasilva@gmail.com", "(51) 9 9988-7766");
-        String rendimentoEsperado = "R$ 0,00";
+        double rendimentoEsperado = 0.00;
         String nomeEsperado = "Teste";
 
         // Act
-        String rendimentos = funcionario.getRendimentos();
+        double rendimentos = funcionario.getRendimentos();
         String nome = funcionario.getNome();
 
         // Assert

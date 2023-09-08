@@ -21,11 +21,8 @@ public class FuncionarioComissionado extends Funcionario{
     }
 
     // Métodos
-
     @Override
     public double getRendimentos() {
         return vendasBrutas * taxaComissao;
     }
-
-    // Get e Set
 }

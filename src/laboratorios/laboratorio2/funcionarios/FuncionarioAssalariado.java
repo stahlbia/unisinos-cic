@@ -22,9 +22,9 @@ public class FuncionarioAssalariado extends Funcionario{
 
     // Métodos
     @Override
-    public Double getRendimentos() {
-        DecimalFormat df = new DecimalFormat("#.###,00");
-        return Double.valueOf(df.format(salarioSemanal));
+    public String getRendimentos() {
+        DecimalFormat df = new DecimalFormat("R$ #,###.00");
+        return df.format(salarioSemanal);
     }
 
     // Get e Set

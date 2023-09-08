@@ -25,9 +25,9 @@ public class FuncionarioComissionado extends Funcionario{
     // Métodos
 
     @Override
-    public Double getRendimentos() {
-        DecimalFormat df = new DecimalFormat("#.###,00");
-        return Double.valueOf(df.format(vendasBrutas * taxaComissao));
+    public String getRendimentos() {
+        DecimalFormat df = new DecimalFormat("R$ #,###.00");
+        return df.format(vendasBrutas * taxaComissao);
     }
 
     // Get e Set

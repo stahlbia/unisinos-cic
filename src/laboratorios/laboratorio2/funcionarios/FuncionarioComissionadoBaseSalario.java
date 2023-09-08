@@ -15,9 +15,9 @@ public class FuncionarioComissionadoBaseSalario extends FuncionarioComissionado{
     // Métodos
 
     @Override
-    public Double getRendimentos() {
-        DecimalFormat df = new DecimalFormat("#.###,00");
-        return Double.valueOf(df.format(super.getRendimentos() + salarioFixo));
+    public String getRendimentos() {
+        DecimalFormat df = new DecimalFormat("R$ #,###.00");
+        return df.format(super.getRendimentos() + salarioFixo);
     }
 
     // Get e Set

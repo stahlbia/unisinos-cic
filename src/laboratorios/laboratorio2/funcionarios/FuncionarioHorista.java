@@ -25,12 +25,12 @@ public class FuncionarioHorista extends Funcionario{
     // Métodos
 
     @Override
-    public Double getRendimentos() {
-        DecimalFormat df = new DecimalFormat("#.###,00");
+    public String getRendimentos() {
+        DecimalFormat df = new DecimalFormat("R$ #,###.00");
         if (horasTrabalhadas <= 40) {
-            return Double.valueOf(df.format(horasTrabalhadas * salarioPorHora));
+            return df.format(horasTrabalhadas * salarioPorHora);
         }
-        return Double.valueOf(df.format(40 * salarioPorHora + (horasTrabalhadas - 40) * salarioPorHora * 1.5));
+        return df.format(40 * salarioPorHora + (horasTrabalhadas - 40) * salarioPorHora * 1.5);
     }
 
     // Get e Set

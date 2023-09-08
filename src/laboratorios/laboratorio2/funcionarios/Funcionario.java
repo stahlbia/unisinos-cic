@@ -1,7 +1,6 @@
 package laboratorios.laboratorio2.funcionarios;
 
 import java.text.DecimalFormat;
-import java.util.Locale;
 
 public class Funcionario {
     // Atributos
@@ -27,10 +26,9 @@ public class Funcionario {
     }
 
     // Métodos
-    public Double getRendimentos() {
-        Locale.setDefault(Locale.US);
-        DecimalFormat df = new DecimalFormat("#,###.00");
-        return Double.parseDouble(df.format(0.00));
+    public String getRendimentos() {
+        DecimalFormat df = new DecimalFormat("R$ #,##0.00");
+        return df.format(0.00);
     }
 
     // Get e Set

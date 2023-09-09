@@ -5,12 +5,15 @@ import laboratorios.laboratorio2.funcionarios.FuncionarioAssalariado;
 import laboratorios.laboratorio2.funcionarios.FuncionarioComissionado;
 import laboratorios.laboratorio2.funcionarios.FuncionarioHorista;
 
+import java.text.DecimalFormat;
+
 public class FolhaPagamento {
     // Atributos
     private Funcionario[] listaFuncionarios;
 
     // Construtor
-    public FolhaPagamento() {
+    public FolhaPagamento(int qtdFuncionarios) {
+        this.listaFuncionarios = new Funcionario[qtdFuncionarios];
     }
 
     public FolhaPagamento(Funcionario[] listaFuncionarios) {
@@ -18,6 +21,16 @@ public class FolhaPagamento {
     }
 
     // Métodos
+    public boolean addFuncionario(Funcionario funcionario) {
+        for (int i = 0; i < listaFuncionarios.length; i++) {
+            if (listaFuncionarios[i] == null) {
+                listaFuncionarios[i] = funcionario;
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Funcionario getFuncionarioNome(String nomeFuncionario) {
         for (Funcionario funcionario : listaFuncionarios) {
             if (funcionario.getNome().equals(nomeFuncionario)) {
@@ -32,7 +45,8 @@ public class FolhaPagamento {
         int aux = 1;
         for (Funcionario funcionario : listaFuncionarios) {
             if (funcionario != null) {
-                String salario = "R$ " + funcionario.getRendimentos();
+                DecimalFormat df = new DecimalFormat("R$ #,##0.00");
+                String salario = df.format(funcionario.getRendimentos());
                 folhaPagamento.append(aux).append(" - ").append(funcionario.getNome()).append(" ").append(funcionario.getSobrenome()).append(": ").append(salario).append("\n");
             }
             aux++;
@@ -45,7 +59,8 @@ public class FolhaPagamento {
         int aux = 1;
         for (Funcionario funcionario : listaFuncionarios) {
             if (funcionario instanceof FuncionarioAssalariado) {
-                String salario = "R$ " + funcionario.getRendimentos();
+                DecimalFormat df = new DecimalFormat("R$ #,##0.00");
+                String salario = df.format(funcionario.getRendimentos());
                 folhaPagamento.append(aux).append(" - ").append(funcionario.getNome()).append(" ").append(funcionario.getSobrenome()).append(": ").append(salario).append("\n");
             }
             aux++;
@@ -58,7 +73,8 @@ public class FolhaPagamento {
         int aux = 1;
         for (Funcionario funcionario : listaFuncionarios) {
             if (funcionario instanceof FuncionarioComissionado) {
-                String salario = "R$ " + funcionario.getRendimentos();
+                DecimalFormat df = new DecimalFormat("R$ #,##0.00");
+                String salario = df.format(funcionario.getRendimentos());
                 folhaPagamento.append(aux).append(" - ").append(funcionario.getNome()).append(" ").append(funcionario.getSobrenome()).append(": ").append(salario).append("\n");
             }
             aux++;
@@ -71,7 +87,8 @@ public class FolhaPagamento {
         int aux = 1;
         for (Funcionario funcionario : listaFuncionarios) {
             if (funcionario instanceof FuncionarioHorista) {
-                String salario = "R$ " + funcionario.getRendimentos();
+                DecimalFormat df = new DecimalFormat("R$ #,##0.00");
+                String salario = df.format(funcionario.getRendimentos());
                 folhaPagamento.append(aux).append(" - ").append(funcionario.getNome()).append(" ").append(funcionario.getSobrenome()).append(": ").append(salario).append("\n");
             }
             aux++;

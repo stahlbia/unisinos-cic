@@ -1,11 +1,9 @@
 package laboratorios.laboratorio2.folhaPagamento;
 
-import laboratorios.laboratorio2.funcionarios.Funcionario;
-import laboratorios.laboratorio2.funcionarios.FuncionarioAssalariado;
-import laboratorios.laboratorio2.funcionarios.FuncionarioComissionado;
-import laboratorios.laboratorio2.funcionarios.FuncionarioHorista;
+import laboratorios.laboratorio2.funcionarios.*;
 
 import java.text.DecimalFormat;
+import java.util.Random;
 
 public class FolhaPagamento {
     // Atributos
@@ -18,6 +16,51 @@ public class FolhaPagamento {
 
     public FolhaPagamento(Funcionario[] listaFuncionarios) {
         this.listaFuncionarios = listaFuncionarios;
+    }
+
+    public FolhaPagamento(int qtdFuncionarios, boolean gerarFuncionariosAleatorio) {
+        this.listaFuncionarios = new Funcionario[qtdFuncionarios];
+        if (gerarFuncionariosAleatorio) {
+            Random gerador = new Random();
+            for (int i = 1; i <= qtdFuncionarios; i++) {
+                String n = String.valueOf(i);
+                Funcionario funcionario = new Funcionario(
+                        n+n+n+n+n+n+n+n,
+                        "Teste" + n,
+                        "daSilva" + n,
+                        n+n+n + "." + n+n+n + "." + n+n+n + "-" + n+n,
+                        30+i,
+                        'A',
+                        "funcionario" + n + "@email.com",
+                        "(" + n+n + ") " + n + " " + n+n+n+n + "-" + n+n+n+n
+
+                );
+                int tipoFuncionario = gerador.nextInt(4);
+                switch (tipoFuncionario) {
+                    case 0 -> this.addFuncionario(new FuncionarioAssalariado(
+                            funcionario,
+                            300
+                    ));
+                    case 1 -> this.addFuncionario(new FuncionarioComissionado(
+                            funcionario,
+                            0.3,
+                            10000
+                    ));
+                    case 2 -> this.addFuncionario(new FuncionarioComissionadoBaseSalario(
+                            funcionario,
+                            0.3,
+                            10000,
+                            300
+                    ));
+                    case 3 -> this.addFuncionario(new FuncionarioHorista(
+                            funcionario,
+                            10,
+                            40
+                    ));
+                    default -> this.addFuncionario(funcionario);
+                }
+            }
+        }
     }
 
     // Métodos
@@ -45,8 +88,9 @@ public class FolhaPagamento {
         int aux = 1;
         for (Funcionario funcionario : listaFuncionarios) {
             if (funcionario != null) {
-                DecimalFormat df = new DecimalFormat("R$ #,##0.00");
-                String salario = df.format(funcionario.getRendimentos());
+                double valorSalario = funcionario.getRendimentos();
+                DecimalFormat df = new DecimalFormat("#,##0.00");
+                String salario = df.format(valorSalario);
                 folhaPagamento.append(aux).append(" - ").append(funcionario.getNome()).append(" ").append(funcionario.getSobrenome()).append(": ").append(salario).append("\n");
             }
             aux++;
@@ -59,7 +103,7 @@ public class FolhaPagamento {
         int aux = 1;
         for (Funcionario funcionario : listaFuncionarios) {
             if (funcionario instanceof FuncionarioAssalariado) {
-                DecimalFormat df = new DecimalFormat("R$ #,##0.00");
+                DecimalFormat df = new DecimalFormat("##0.00");
                 String salario = df.format(funcionario.getRendimentos());
                 folhaPagamento.append(aux).append(" - ").append(funcionario.getNome()).append(" ").append(funcionario.getSobrenome()).append(": ").append(salario).append("\n");
             }
@@ -73,7 +117,7 @@ public class FolhaPagamento {
         int aux = 1;
         for (Funcionario funcionario : listaFuncionarios) {
             if (funcionario instanceof FuncionarioComissionado) {
-                DecimalFormat df = new DecimalFormat("R$ #,##0.00");
+                DecimalFormat df = new DecimalFormat("##0.00");
                 String salario = df.format(funcionario.getRendimentos());
                 folhaPagamento.append(aux).append(" - ").append(funcionario.getNome()).append(" ").append(funcionario.getSobrenome()).append(": ").append(salario).append("\n");
             }
@@ -87,7 +131,7 @@ public class FolhaPagamento {
         int aux = 1;
         for (Funcionario funcionario : listaFuncionarios) {
             if (funcionario instanceof FuncionarioHorista) {
-                DecimalFormat df = new DecimalFormat("R$ #,##0.00");
+                DecimalFormat df = new DecimalFormat("##0.00");
                 String salario = df.format(funcionario.getRendimentos());
                 folhaPagamento.append(aux).append(" - ").append(funcionario.getNome()).append(" ").append(funcionario.getSobrenome()).append(": ").append(salario).append("\n");
             }

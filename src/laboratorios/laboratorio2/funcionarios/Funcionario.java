@@ -25,7 +25,7 @@ public class Funcionario {
 
     // Métodos
     public double getRendimentos() {
-        return 0.00;
+        return 0.0;
     }
 
     // Get e Set

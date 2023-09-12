@@ -1,19 +1,23 @@
 package laboratorios.laboratorio2.funcionarios;
 
-public class FuncionarioAssalariado extends Funcionario{
+import laboratorios.laboratorio2.dadosPessoais.DadosPessoais;
+
+public class FuncionarioAssalariado implements Funcionario {
     // Atributos
+    private DadosPessoais dadosPessoais;
     private double salarioSemanal;
 
     // Construtor
-    public FuncionarioAssalariado(Funcionario dadosPessoais, double salarioSemanal) {
-        super(
-                dadosPessoais.getIdFuncionario(),
-                dadosPessoais.getNome(), dadosPessoais.getSobrenome(),
-                dadosPessoais.getCpf(),
-                dadosPessoais.getIdade(),
-                dadosPessoais.getSexo(),
-                dadosPessoais.getEmail(),
-                dadosPessoais.getTelefone()
+    public FuncionarioAssalariado(DadosPessoais dadosPessoais, double salarioSemanal) {
+        this.dadosPessoais = new DadosPessoais(
+            dadosPessoais.getIdFuncionario(),
+            dadosPessoais.getNome(),
+            dadosPessoais.getSobrenome(),
+            dadosPessoais.getCpf(),
+            dadosPessoais.getIdade(),
+            dadosPessoais.getSexo(),
+            dadosPessoais.getEmail(),
+            dadosPessoais.getTelefone()
         );
         this.salarioSemanal = salarioSemanal;
     }
@@ -25,6 +29,15 @@ public class FuncionarioAssalariado extends Funcionario{
     }
 
     // Get e Set
+    @Override
+    public DadosPessoais getDadosPessoais() {
+        return dadosPessoais;
+    }
+
+    public void setDadosPessoais(DadosPessoais dadosPessoais) {
+        this.dadosPessoais = dadosPessoais;
+    }
+
     public void setSalarioSemanal(double salarioSemanal) {
         this.salarioSemanal = salarioSemanal;
     }

@@ -1,15 +1,19 @@
 package laboratorios.laboratorio2.funcionarios;
 
-public class FuncionarioComissionado extends Funcionario{
+import laboratorios.laboratorio2.dadosPessoais.DadosPessoais;
+
+public class FuncionarioComissionado implements Funcionario{
     // Atributos
+    private DadosPessoais dadosPessoais;
     private double taxaComissao;
     private double vendasBrutas;
 
     // Construtor
-    public FuncionarioComissionado(Funcionario dadosPessoais, double taxaComissao, double vendasBrutas) {
-        super(
+    public FuncionarioComissionado(DadosPessoais dadosPessoais, double taxaComissao, double vendasBrutas) {
+        this.dadosPessoais = new DadosPessoais(
                 dadosPessoais.getIdFuncionario(),
-                dadosPessoais.getNome(), dadosPessoais.getSobrenome(),
+                dadosPessoais.getNome(),
+                dadosPessoais.getSobrenome(),
                 dadosPessoais.getCpf(),
                 dadosPessoais.getIdade(),
                 dadosPessoais.getSexo(),
@@ -27,6 +31,15 @@ public class FuncionarioComissionado extends Funcionario{
     }
 
     // Get e Set
+    @Override
+    public DadosPessoais getDadosPessoais() {
+        return dadosPessoais;
+    }
+
+    public void setDadosPessoais(DadosPessoais dadosPessoais) {
+        this.dadosPessoais = dadosPessoais;
+    }
+
     public double getTaxaComissao() {
         return taxaComissao;
     }

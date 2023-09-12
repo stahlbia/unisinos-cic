@@ -1,17 +1,22 @@
 package laboratorios.laboratorio2.funcionarios;
 
+import laboratorios.laboratorio2.dadosPessoais.DadosPessoais;
+
 public class FuncionarioComissionadoBaseSalario extends FuncionarioComissionado{
     // Atributos
     private double salarioFixo;
 
     // Construtor
-    public FuncionarioComissionadoBaseSalario(Funcionario dadosPessoais, double taxaComissao, double vendasBrutas, double salarioFixo) {
-        super(dadosPessoais, taxaComissao, vendasBrutas);
+    public FuncionarioComissionadoBaseSalario(DadosPessoais dadosPessoais, double taxaComissao, double vendasBrutas, double salarioFixo) {
+        super(
+            dadosPessoais,
+            taxaComissao,
+            vendasBrutas
+        );
         this.salarioFixo = salarioFixo;
     }
 
     // Métodos
-
     @Override
     public double getRendimentos() {
         return (super.getRendimentos() + salarioFixo);

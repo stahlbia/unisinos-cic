@@ -1,15 +1,19 @@
 package laboratorios.laboratorio2.funcionarios;
 
-public class FuncionarioHorista extends Funcionario{
+import laboratorios.laboratorio2.dadosPessoais.DadosPessoais;
+
+public class FuncionarioHorista implements Funcionario{
     // Atributos
+    private DadosPessoais dadosPessoais;
     private double salarioPorHora;
     private double horasTrabalhadas;
 
     // Construtor
-    public FuncionarioHorista(Funcionario dadosPessoais, double salarioPorHora, double horasTrabalhadas) {
-        super(
+    public FuncionarioHorista(DadosPessoais dadosPessoais, double salarioPorHora, double horasTrabalhadas) {
+        this.dadosPessoais = new DadosPessoais(
                 dadosPessoais.getIdFuncionario(),
-                dadosPessoais.getNome(), dadosPessoais.getSobrenome(),
+                dadosPessoais.getNome(),
+                dadosPessoais.getSobrenome(),
                 dadosPessoais.getCpf(),
                 dadosPessoais.getIdade(),
                 dadosPessoais.getSexo(),
@@ -31,6 +35,15 @@ public class FuncionarioHorista extends Funcionario{
     }
 
     // Get e Set
+    @Override
+    public DadosPessoais getDadosPessoais() {
+        return dadosPessoais;
+    }
+
+    public void setDadosPessoais(DadosPessoais dadosPessoais) {
+        this.dadosPessoais = dadosPessoais;
+    }
+
     public double getSalarioPorHora() {
         return salarioPorHora;
     }

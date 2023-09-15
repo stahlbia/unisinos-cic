@@ -1,5 +1,6 @@
 package laboratorios.laboratorio2.testes;
 
+import laboratorios.laboratorio2.dadosPessoais.DadosPessoais;
 import laboratorios.laboratorio2.folhaPagamento.FolhaPagamento;
 import laboratorios.laboratorio2.funcionarios.*;
 import org.junit.Assert;
@@ -140,5 +141,33 @@ public class FolhaDePagamentoTest {
 
         // Assert
         Assert.assertEquals(nomeEsperado, nome);
+    }
+
+    @Test
+    public void deveConseguirAdicionarUmFuncionario() {
+        // Arrange
+        FolhaPagamento folhaPagamento = new FolhaPagamento(9);
+        DadosPessoais dadosPessoais = new DadosPessoais("12345678", "Teste", "da Silva", "123.456.789-10", 30, 'B', "teste.dasilva@gmail.com", "(51) 9 9988-7766");
+        FuncionarioAssalariado funcionarioAssalariado = new FuncionarioAssalariado(dadosPessoais, 2000);
+
+        // Act
+        boolean retorno = folhaPagamento.addFuncionario(funcionarioAssalariado);
+
+        // Assert
+        Assert.assertTrue(retorno);
+    }
+
+    @Test
+    public void deveNaoConseguirAdicionarUmFuncionario() {
+        // Arrange
+        FolhaPagamento folhaPagamento = new FolhaPagamento(9, false);
+        DadosPessoais dadosPessoais = new DadosPessoais("12345678", "Teste", "da Silva", "123.456.789-10", 30, 'B', "teste.dasilva@gmail.com", "(51) 9 9988-7766");
+        FuncionarioAssalariado funcionarioAssalariado = new FuncionarioAssalariado(dadosPessoais, 2000);
+
+        // Act
+        boolean retorno = folhaPagamento.addFuncionario(funcionarioAssalariado);
+
+        // Assert
+        Assert.assertFalse(retorno);
     }
 }

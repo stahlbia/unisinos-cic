@@ -7,6 +7,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class FolhaDePagamentoTest {
+    DadosPessoais dadosPessoais1 = new DadosPessoais("12345678", "Teste", "da Silva", "123.456.789-10", 30, 'B', "teste.dasilva@gmail.com", "(51) 9 9988-7766");
+    DadosPessoais dadosPessoais2 = new DadosPessoais("87654321", "Teste2", "da Silva", "987.654.321-00", 40, 'A', "teste2.dasilva@gmail.com", "(51) 9 6677-8899");
     @Test
     public void deveCriarUmaFolhaDePagamentoCom9Funcionarios() {
         // Arrange
@@ -147,8 +149,7 @@ public class FolhaDePagamentoTest {
     public void deveConseguirAdicionarUmFuncionario() {
         // Arrange
         FolhaPagamento folhaPagamento = new FolhaPagamento(9);
-        DadosPessoais dadosPessoais = new DadosPessoais("12345678", "Teste", "da Silva", "123.456.789-10", 30, 'B', "teste.dasilva@gmail.com", "(51) 9 9988-7766");
-        FuncionarioAssalariado funcionarioAssalariado = new FuncionarioAssalariado(dadosPessoais, 2000);
+        FuncionarioAssalariado funcionarioAssalariado = new FuncionarioAssalariado(dadosPessoais1, 2000);
 
         // Act
         boolean retorno = folhaPagamento.addFuncionario(funcionarioAssalariado);
@@ -161,13 +162,45 @@ public class FolhaDePagamentoTest {
     public void deveNaoConseguirAdicionarUmFuncionario() {
         // Arrange
         FolhaPagamento folhaPagamento = new FolhaPagamento(9, false);
-        DadosPessoais dadosPessoais = new DadosPessoais("12345678", "Teste", "da Silva", "123.456.789-10", 30, 'B', "teste.dasilva@gmail.com", "(51) 9 9988-7766");
-        FuncionarioAssalariado funcionarioAssalariado = new FuncionarioAssalariado(dadosPessoais, 2000);
+        FuncionarioAssalariado funcionarioAssalariado = new FuncionarioAssalariado(dadosPessoais1, 2000);
 
         // Act
         boolean retorno = folhaPagamento.addFuncionario(funcionarioAssalariado);
 
         // Assert
         Assert.assertFalse(retorno);
+    }
+
+    @Test
+    public void deveConseguirCriarComUmaListaJaPronta() {
+        // Arrange
+        FuncionarioHorista funcionario1 = new FuncionarioHorista(dadosPessoais1, 10.0, 30);
+        FuncionarioComissionado funcionario2 = new FuncionarioComissionado(dadosPessoais2, 0.3, 10000);
+        Funcionario[] listaFuncionarios = {funcionario1, funcionario2};
+        FolhaPagamento folhaPagamento = new FolhaPagamento(listaFuncionarios);
+        Funcionario[] listaEsperada = {funcionario1, funcionario2};
+
+        // Act
+        Funcionario[] lista = folhaPagamento.getListaFuncionarios();
+
+        // Assert
+        Assert.assertArrayEquals(listaEsperada, lista);
+    }
+    
+    @Test
+    public void deveConseguirEditarUmLista() {
+        // Arrange
+        FolhaPagamento folhaPagamento = new FolhaPagamento(2, true);
+        FuncionarioHorista funcionario1 = new FuncionarioHorista(dadosPessoais1, 10.0, 30);
+        FuncionarioComissionado funcionario2 = new FuncionarioComissionado(dadosPessoais2, 0.3, 10000);
+        Funcionario[] listaFuncionarios = {funcionario1, funcionario2};
+        Funcionario[] listaEsperada = {funcionario1, funcionario2};
+        
+        // Act
+        folhaPagamento.setListaFuncionarios(listaFuncionarios);
+        Funcionario[] lista = folhaPagamento.getListaFuncionarios();
+        
+        // Assert
+        Assert.assertArrayEquals(listaEsperada, lista);
     }
 }

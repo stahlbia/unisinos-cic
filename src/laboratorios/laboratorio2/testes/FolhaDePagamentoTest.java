@@ -172,6 +172,45 @@ public class FolhaDePagamentoTest {
     }
 
     @Test
+    public void deveConseguirRemoverUmFuncionario() {
+        // Arrange
+        FolhaPagamento folhaPagamento = new FolhaPagamento(9, false);
+        String nomeFuncionario = "Teste1";
+
+        // Act
+        boolean retorno = folhaPagamento.removeFuncionarioPeloNome(nomeFuncionario);
+
+        // Assert
+        Assert.assertTrue(retorno);
+    }
+
+    @Test
+    public void deveNaoConseguirRemoverUmFuncionarioSeNomeEstiverErrado() {
+        // Arrange
+        FolhaPagamento folhaPagamento = new FolhaPagamento(9, false);
+        String nomeErrado = "naoExiste";
+
+        // Act
+        boolean retorno = folhaPagamento.removeFuncionarioPeloNome(nomeErrado);
+
+        // Assert
+        Assert.assertFalse(retorno);
+    }
+
+    @Test
+    public void deveNaoConseguirRemoverUmFuncionarioSeNaoTiverFuncionarios() {
+        // Arrange
+        FolhaPagamento folhaPagamento = new FolhaPagamento(9);
+        String nomeErrado = "naoExiste";
+
+        // Act
+        boolean retorno = folhaPagamento.removeFuncionarioPeloNome(nomeErrado);
+
+        // Assert
+        Assert.assertFalse(retorno);
+    }
+
+    @Test
     public void deveConseguirCriarComUmaListaJaPronta() {
         // Arrange
         FuncionarioHorista funcionario1 = new FuncionarioHorista(dadosPessoais1, 10.0, 30);

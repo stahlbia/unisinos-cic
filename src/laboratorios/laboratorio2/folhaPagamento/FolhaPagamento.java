@@ -132,6 +132,16 @@ public class FolhaPagamento {
         return false;
     }
 
+    public boolean removeFuncionarioPeloNome(String nome) {
+        for (int i = 0; i < listaFuncionarios.length; i++) {
+            if (listaFuncionarios[i] != null && (listaFuncionarios[i].getDadosPessoais().getNome().equals(nome))) {
+                    listaFuncionarios[i] = null;
+                    return true;
+            }
+        }
+        return false;
+    }
+
     public Funcionario getFuncionarioNome(String nomeFuncionario) {
         for (Funcionario funcionario : listaFuncionarios) {
             if (funcionario.getDadosPessoais().getNome().equals(nomeFuncionario)) {

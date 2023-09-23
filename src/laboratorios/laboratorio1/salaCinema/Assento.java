@@ -4,6 +4,11 @@ public class Assento {
     // Atributos
     private boolean ocupado;
 
+    // Construtor
+    public Assento() {
+        this.ocupado = false;
+    }
+
     // Métodos
     @Override
     public String toString() {
@@ -12,13 +17,16 @@ public class Assento {
         }
         return "▢";
     }
+    public void reservar() {
+        this.ocupado = true;
+    }
+
+    public void cancelar() {
+        this.ocupado = false;
+    }
 
     // Get e Set
     public boolean isOcupado() {
         return ocupado;
-    }
-
-    public void setOcupado(boolean ocupado) {
-        this.ocupado = ocupado;
     }
 }

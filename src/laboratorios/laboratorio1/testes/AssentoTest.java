@@ -23,7 +23,7 @@ public class AssentoTest {
         Assento assento = new Assento();
 
         // Act
-        assento.setOcupado(true);
+        assento.reservar();
         boolean status = assento.isOcupado();
 
         // Assert

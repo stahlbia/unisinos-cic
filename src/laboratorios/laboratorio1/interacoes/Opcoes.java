@@ -1,55 +1,87 @@
 package laboratorios.laboratorio1.interacoes;
 
 import laboratorios.laboratorio1.salaCinema.SalaCinema;
-
 import java.util.Scanner;
 
 import static java.lang.System.out;
 
 public class Opcoes {
     // Atributos
-    static Scanner scanner = new Scanner(System.in);
+    Scanner scanner;
+    Teclado teclado;
     SalaCinema sala = new SalaCinema();
+
+    // Construtor
+    public Opcoes() {
+        scanner = new Scanner(System.in);
+        teclado = new Teclado();
+    }
 
     // Métodos
     public int escolher() {
-        out.println("Escolha uma das opções:");
-        out.println("1 - Reservar");
-        out.println("2 - Cancelar");
-        out.println("3 - Mostrar Sala");
-        out.println("4 - Mostrar Quantidade de Lugares");
-        out.println("5 - Finalizar Compra");
-
-        return Integer.parseInt(scanner.nextLine());
+        out.println(ConsoleColors.BLUE_BOLD + "\n========== Menu ==========" + ConsoleColors.RESET);
+        out.println("1. Reservar um assento");
+        out.println("2. Cancelar uma reserva");
+        out.println("3. Mostrar mapa de assentos");
+        out.println("4. Mostrar total de lugares livres/ocupados");
+        out.println("5. Sair do programa");
+        return teclado.leInt("Escolha uma opção: ");
     }
 
-    public boolean reservar() {
-        out.println("Gostaria de reservar um assento em qual fileira?");
-        int fileira = scanner.nextLine().charAt(0) - 65;
-        out.println("Qual o número do assento?");
-        int cadeira = Integer.parseInt(scanner.nextLine());
+    public void reservar() {
+        int fileira = escolherFileira();
+        int cadeira = escolherCadeira();
 
-        return sala.reservar(fileira, cadeira);
+        boolean resultado = sala.reservar(fileira, cadeira);
+        if (resultado) out.println(ConsoleColors.GREEN + "\nAssento reservado com sucesso!" + ConsoleColors.RESET);
+        else out.println(ConsoleColors.RED + "\nAssento já está ocupado ou é inválido!" + ConsoleColors.RESET);
     }
 
-    public boolean cancelar() {
-        out.println("Gostaria de cancelar a reserva em qual fileira?");
-        int fileira = scanner.nextLine().charAt(0);
-        out.println("Qual o número do assento que gostaria de cancelar?");
-        int cadeira = scanner.nextInt();
+    public void cancelar() {
+        int fileira = escolherFileira();
+        int cadeira = escolherCadeira();
 
-        return sala.cancelar(fileira, cadeira);
+        boolean resultado = sala.cancelar(fileira, cadeira);
+        if (resultado) out.println(ConsoleColors.GREEN + "\nReserva cancelada com sucesso!" + ConsoleColors.RESET);
+        else out.println(ConsoleColors.RED + "\nAssento não está ocupado ou é inválido!" + ConsoleColors.RESET);
     }
 
-    public boolean mostrarSala() {
-        out.println("Sala do Cinema:");
+    public void mostrarSala() {
         out.println(sala.mostrarMapa());
-        return true;
     }
 
-    public boolean mostrarQtdLugaresLivres() {
-        out.print("Quantidade de lugares livres na sessão: ");
-        out.println(sala.calcularQuantidadeAssentosLivres());
-        return true;
+    public void mostrarQtdLugaresLivres() {
+        out.println(
+            ConsoleColors.YELLOW +
+            "\nQuantidade de lugares livres na sessão: " +
+            sala.calcularQuantidadeAssentosLivres() +
+            ConsoleColors.RESET
+        );
+        out.println(
+            ConsoleColors.YELLOW +
+            "Quantidade de lugares ocupados na sessão: " +
+            sala.calcularQuantidadeAssentosOcupados() +
+            ConsoleColors.RESET
+        );
+    }
+
+    private int escolherFileira() { // A = 65 L = 76
+        while (true) {
+            int fileira = teclado.leChar("Escolha uma fileira: ") - 65;
+            if (0 <= fileira && fileira < sala.getQuantidadeFileiras()) {
+                return fileira;
+            }
+            out.println("Fileira inválida!");
+        }
+    }
+
+    private int escolherCadeira() {
+        while (true) {
+            int cadeira = teclado.leInt("Escolha uma cadeira: ") - 1;
+            if (0 <= cadeira && cadeira < sala.getQuantidadeCadeiras()) {
+                return cadeira;
+            }
+            out.println("Cadeira inválida!");
+        }
     }
 }

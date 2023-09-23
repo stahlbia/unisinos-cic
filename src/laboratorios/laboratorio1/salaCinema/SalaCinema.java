@@ -20,16 +20,22 @@ public class SalaCinema {
 
     // Métodos
     public boolean reservar(int fileira, int cadeira){
+        if (fileira < 0 || fileira > QUANTIDADE_FILEIRAS || cadeira < 0 || cadeira > QUANTIDADE_CADEIRAS) {
+            return false;
+        }
         if (!assentos[fileira][cadeira].isOcupado()){
-            assentos[fileira][cadeira].setOcupado(true);
+            assentos[fileira][cadeira].reservar();
             return true;
         }
         return false;
     }
 
     public boolean cancelar(int fileira, int cadeira){
+        if (fileira < 1 || fileira > QUANTIDADE_FILEIRAS || cadeira < 1 || cadeira > QUANTIDADE_CADEIRAS) {
+            return false;
+        }
         if (assentos[fileira][cadeira].isOcupado()){
-            assentos[fileira][cadeira].setOcupado(false);
+            assentos[fileira][cadeira].cancelar();
             return true;
         }
         return false;
@@ -37,6 +43,7 @@ public class SalaCinema {
 
     public String mostrarMapa(){
         StringBuilder resultado = new StringBuilder();
+        resultado.append("\n");
         for (int i = 0; i < QUANTIDADE_FILEIRAS; i++) {
             resultado.append(ALFABETO[i]).append("\t");
             for (int j = 0; j < QUANTIDADE_CADEIRAS; j++) {
@@ -55,8 +62,6 @@ public class SalaCinema {
                 resultado.append(" \t");
             }
         }
-        resultado.append("\n");
-        resultado.append("\n");
         return String.valueOf(resultado);
     }
 

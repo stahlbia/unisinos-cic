@@ -24,22 +24,8 @@ public class Teclado {
     }
 
     /**
-     * Lê um inteiro
-     * @return inteiro
-     */
-    public int leInt () {
-        while (true) {
-            String s = scanner.nextLine();
-            if (isInt(s)) {
-                return Integer.parseInt(s);
-            }
-            System.out.println(invalidoMsg);
-        }
-    }
-
-    /**
      * Lê um inteiro e printa uma mensagem antes
-     * @return inteiro
+     * @return int
      */
     public int leInt (String msg) {
         while (true) {
@@ -52,16 +38,10 @@ public class Teclado {
         }
     }
 
-    public char leChar() {
-        while (true) {
-            String s = scanner.nextLine();
-            if (s != null) {
-                return s.charAt(0);
-            }
-            System.out.println(invalidoMsg);
-        }
-    }
-
+    /**
+     * Lê um caracter e printa uma mensagem antes
+     * @return char
+     */
     public char leChar(String msg) {
         while (true) {
             System.out.print(msg);

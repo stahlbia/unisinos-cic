@@ -20,7 +20,7 @@ public class SalaCinemaTest {
     }
 
     @Test
-    public void deveReservarUmAssentoCorretamente() {
+    public void deveConseguirReservarUmAssento() {
         // Arrange
         SalaCinema sala = new SalaCinema();
 
@@ -32,7 +32,20 @@ public class SalaCinemaTest {
     }
 
     @Test
-    public void deveCancelarUmaRevervaCorretamente() {
+    public void deveNaoConseguirReservarUmAssentoJaOcupado() {
+        // Arrange
+        SalaCinema sala = new SalaCinema();
+
+        // Act
+        sala.reservar(2, 2);
+        boolean retorno = sala.reservar(2, 2);
+
+        // Assert
+        Assert.assertFalse(retorno);
+    }
+
+    @Test
+    public void deveConseguirCancelarUmaReverva() {
         // Arrange
         SalaCinema sala = new SalaCinema();
 
@@ -42,6 +55,18 @@ public class SalaCinemaTest {
 
         // Assert
         Assert.assertTrue(retorno);
+    }
+
+    @Test
+    public void deveNaoConseguirCancelarUmAssentoNaoOcupado() {
+        // Arrange
+        SalaCinema sala = new SalaCinema();
+
+        // Act
+        boolean retorno = sala.cancelar(2, 2);
+
+        // Assert
+        Assert.assertFalse(retorno);
     }
 
     @Test

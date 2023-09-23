@@ -92,10 +92,6 @@ public class SalaCinema {
         return assentos;
     }
 
-    public void setAssentos(Assento[][] assentos) {
-        this.assentos = assentos;
-    }
-
     public int getQuantidadeFileiras() {
         return QUANTIDADE_FILEIRAS;
     }

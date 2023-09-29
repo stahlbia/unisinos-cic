@@ -10,7 +10,7 @@ public abstract class ProdutoAudiovisual {
     private String genero;
 
     // Construtor
-    public ProdutoAudiovisual(String id, String nome, String ano, String diretor, String[] principaisAtores, String genero) {
+    protected ProdutoAudiovisual(String id, String nome, String ano, String diretor, String[] principaisAtores, String genero) {
         this.id = id;
         this.nome = nome;
         this.ano = ano;

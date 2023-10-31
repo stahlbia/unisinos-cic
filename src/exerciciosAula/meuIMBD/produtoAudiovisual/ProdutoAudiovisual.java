@@ -1,5 +1,7 @@
 package exerciciosAula.meuIMBD.produtoAudiovisual;
 
+import exerciciosAula.meuIMBD.streamings.Streaming;
+
 public abstract class ProdutoAudiovisual {
     // Atributos
     private String id;
@@ -7,16 +9,18 @@ public abstract class ProdutoAudiovisual {
     private String ano;
     private String diretor;
     private String[] principaisAtores;
-    private String genero;
+    private Generos genero;
+    private Streaming[] streamingsPresentes;
 
     // Construtor
-    protected ProdutoAudiovisual(String id, String nome, String ano, String diretor, String[] principaisAtores, String genero) {
+    protected ProdutoAudiovisual(String id, String nome, String ano, String diretor, String[] principaisAtores, Generos genero, Streaming[] streamingsPresentes) {
         this.id = id;
         this.nome = nome;
         this.ano = ano;
         this.diretor = diretor;
         this.principaisAtores = principaisAtores;
         this.genero = genero;
+        this.streamingsPresentes = streamingsPresentes;
     }
 
     // Get e Set
@@ -60,11 +64,11 @@ public abstract class ProdutoAudiovisual {
         this.principaisAtores = principaisAtores;
     }
 
-    public String getGenero() {
+    public Generos getGenero() {
         return genero;
     }
 
-    public void setGenero(String genero) {
+    public void setGenero(Generos genero) {
         this.genero = genero;
     }
 }

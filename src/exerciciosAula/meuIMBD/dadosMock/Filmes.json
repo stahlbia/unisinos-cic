@@ -1,0 +1,34 @@
+{
+  "data": [
+    {
+      "id": "6a6fa534-4437-4458-890b-711ab4beb023",
+      "nome":  "Carga Máxima",
+      "ano":  "2023",
+      "diretor":  "Tomás Portella",
+      "principaisAtores":  ["Sheron Menezzes", "Thiago Martins", "Milhem Cortaz"],
+      "genero":  ["ACAO", "DRAMA"],
+      "duracaoMim": 98,
+      "streamingsPresentes": ["Netflix"]
+    },
+    {
+      "id": "4c8284c2-7787-11ee-b962-0242ac120002",
+      "nome":  "Sr. e Sra. Smith",
+      "ano":  "2005",
+      "diretor":  "Doug Liman",
+      "principaisAtores":  ["Brad Pitt", "Angelina Jolie", "Vince Vaughn"],
+      "genero":  ["ACAO", "DRAMA", "COMEDIA"],
+      "duracaoMim": 126,
+      "streamingsPresentes": ["Netflix", "Star Plus", "HBO Max"]
+    },
+    {
+      "id": "4c82892c-7787-11ee-b962-0242ac120002",
+      "nome":  "A Mumia",
+      "ano":  "2017",
+      "diretor":  "Alex Kurtzman",
+      "principaisAtores":  ["Tom Cruise", "Sofia Boutella", "Annabelle Wallis"],
+      "genero":  ["ACAO", "AVENTURA"],
+      "duracaoMim": 110,
+      "streamingsPresentes": ["Netflix", "Star Plus"]
+    }
+  ]
+}

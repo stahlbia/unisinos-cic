@@ -5,7 +5,7 @@ public class Serie extends ProdutoAudiovisual{
     int[][] temporadas;
 
     // Construtor
-    public Serie(String id, String nome, String ano, String diretor, String[] principaisAtores, String genero, int[][] temporadas) {
+    public Serie(String id, String nome, String ano, String diretor, String[] principaisAtores, Generos genero, int[][] temporadas) {
         super(id, nome, ano, diretor, principaisAtores, genero);
         this.temporadas = temporadas;
     }

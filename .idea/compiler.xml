@@ -6,8 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="ajustes" />
+        <module name="algoritmos-unisinos" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="algoritmos-unisinos" target="20" />
+    </bytecodeTargetLevel>
   </component>
 </project>

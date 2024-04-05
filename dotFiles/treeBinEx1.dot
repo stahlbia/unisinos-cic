@@ -1,0 +1,8 @@
+digraph BinTree {
+node [shape=circle, style=filled, color=black, fillcolor="#0096c7"];
+edge [color=black];
+10 -> 5;
+10 -> 20;
+5 -> 3;
+5 -> 7;
+}

@@ -1,0 +1,37 @@
+<?xml version="1.0" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="49pt" height="193pt" viewBox="0.00 0.00 49.39 193.39">
+<g id="graph0" class="graph" transform="translate(4,189.38999938964844) scale(1)" data-name="BinTree">
+
+<polygon fill="white" stroke="none" points="-4,4 -4,-189.39 45.39,-189.39 45.39,4 -4,4" style=""/>
+<!-- 10 -->
+<g id="node1" class="node" pointer-events="visible" data-name="10">
+
+<ellipse fill="#0096c7" stroke="black" cx="20.69" cy="-164.69" rx="20.89" ry="20.89" style=""/>
+<text text-anchor="middle" x="20.69" y="-160.49" font-family="Times,serif" font-size="14.00" style="">10</text>
+</g>
+<!-- 7 -->
+<g id="node2" class="node" pointer-events="visible" data-name="7">
+
+<ellipse fill="#0096c7" stroke="black" cx="20.69" cy="-90" rx="18" ry="18" style=""/>
+<text text-anchor="middle" x="20.69" y="-85.8" font-family="Times,serif" font-size="14.00" style="">7</text>
+</g>
+<!-- 10&#45;&gt;7 -->
+<g id="edge1" class="edge" data-name="10-&gt;7">
+
+<path fill="none" stroke="black" d="M20.69,-143.44C20.69,-136.08 20.69,-127.61 20.69,-119.65" style=""/>
+<polygon fill="black" stroke="black" points="24.19,-119.7 20.69,-109.7 17.19,-119.7 24.19,-119.7" style=""/>
+</g>
+<!-- 3 -->
+<g id="node3" class="node" pointer-events="visible" data-name="3">
+
+<ellipse fill="#0096c7" stroke="black" cx="20.69" cy="-18" rx="18" ry="18" style=""/>
+<text text-anchor="middle" x="20.69" y="-13.8" font-family="Times,serif" font-size="14.00" style="">3</text>
+</g>
+<!-- 7&#45;&gt;3 -->
+<g id="edge2" class="edge" data-name="7-&gt;3">
+
+<path fill="none" stroke="black" d="M20.69,-71.7C20.69,-64.41 20.69,-55.73 20.69,-47.54" style=""/>
+<polygon fill="black" stroke="black" points="24.19,-47.62 20.69,-37.62 17.19,-47.62 24.19,-47.62" style=""/>
+</g>
+</g>
+</svg>

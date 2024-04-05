@@ -1,0 +1,49 @@
+<?xml version="1.0" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="98pt" height="193pt" viewBox="0.00 0.00 98.00 193.39">
+<g id="graph0" class="graph" transform="translate(4,189.38999938964844) scale(1)" data-name="BinTree">
+
+<polygon fill="white" stroke="none" points="-4,4 -4,-189.39 94,-189.39 94,4 -4,4" style=""/>
+<!-- 20 -->
+<g id="node1" class="node" pointer-events="visible" data-name="20">
+
+<ellipse fill="#0096c7" stroke="black" cx="45" cy="-164.69" rx="20.89" ry="20.89" style=""/>
+<text text-anchor="middle" x="45" y="-160.49" font-family="Times,serif" font-size="14.00" style="">20</text>
+</g>
+<!-- 5 -->
+<g id="node2" class="node" pointer-events="visible" data-name="5">
+
+<ellipse fill="#0096c7" stroke="black" cx="45" cy="-90" rx="18" ry="18" style=""/>
+<text text-anchor="middle" x="45" y="-85.8" font-family="Times,serif" font-size="14.00" style="">5</text>
+</g>
+<!-- 20&#45;&gt;5 -->
+<g id="edge1" class="edge" data-name="20-&gt;5">
+
+<path fill="none" stroke="black" d="M45,-143.44C45,-136.08 45,-127.61 45,-119.65" style=""/>
+<polygon fill="black" stroke="black" points="48.5,-119.7 45,-109.7 41.5,-119.7 48.5,-119.7" style=""/>
+</g>
+<!-- 3 -->
+<g id="node3" class="node" pointer-events="visible" data-name="3">
+
+<ellipse fill="#0096c7" stroke="black" cx="18" cy="-18" rx="18" ry="18" style=""/>
+<text text-anchor="middle" x="18" y="-13.8" font-family="Times,serif" font-size="14.00" style="">3</text>
+</g>
+<!-- 5&#45;&gt;3 -->
+<g id="edge2" class="edge" data-name="5-&gt;3">
+
+<path fill="none" stroke="black" d="M38.74,-72.76C35.64,-64.72 31.81,-54.81 28.3,-45.69" style=""/>
+<polygon fill="black" stroke="black" points="31.64,-44.63 24.77,-36.56 25.11,-47.15 31.64,-44.63" style=""/>
+</g>
+<!-- 7 -->
+<g id="node4" class="node" pointer-events="visible" data-name="7">
+
+<ellipse fill="#0096c7" stroke="black" cx="72" cy="-18" rx="18" ry="18" style=""/>
+<text text-anchor="middle" x="72" y="-13.8" font-family="Times,serif" font-size="14.00" style="">7</text>
+</g>
+<!-- 5&#45;&gt;7 -->
+<g id="edge3" class="edge" data-name="5-&gt;7">
+
+<path fill="none" stroke="black" d="M51.26,-72.76C54.36,-64.72 58.19,-54.81 61.7,-45.69" style=""/>
+<polygon fill="black" stroke="black" points="64.89,-47.15 65.23,-36.56 58.36,-44.63 64.89,-47.15" style=""/>
+</g>
+</g>
+</svg>

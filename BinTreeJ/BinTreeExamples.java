@@ -22,7 +22,7 @@ public class BinTreeExamples {
         tree.preOrder();
         tree.central();
         tree.postOrder();
-        tree.generateDotFile("treeBinEx1.dot");
+        tree.generateDotFile("dotFiles/treeBinEx1.dot");
     }
 
     private void example02() {
@@ -43,10 +43,10 @@ public class BinTreeExamples {
         tree.central();
         tree.postOrder();
 
-        tree.generateDotFile("treeBinEx2-1.dot");
+        tree.generateDotFile("dotFiles/treeBinEx2-1.dot");
 
         tree.remove(38);
-        tree.generateDotFile("treeBinEx2-2.dot");
+        tree.generateDotFile("dotFiles/treeBinEx2-2.dot");
     }
 
     private void example03() {
@@ -64,7 +64,7 @@ public class BinTreeExamples {
 
         tree.remove(5);
         tree.remove(20);
-        tree.generateDotFile("treeBinEx3.dot");
+        tree.generateDotFile("dotFiles/treeBinEx3.dot");
     }
 
     private void example04() {
@@ -82,7 +82,7 @@ public class BinTreeExamples {
 
         tree.remove(3);
         tree.remove(5);
-        tree.generateDotFile("treeBinEx4.dot");
+        tree.generateDotFile("dotFiles/treeBinEx4.dot");
     }
 
     private void example05() {
@@ -99,6 +99,6 @@ public class BinTreeExamples {
         tree.postOrder();
 
         tree.remove(10);
-        tree.generateDotFile("treeBinEx5.dot");
+        tree.generateDotFile("dotFiles/treeBinEx5.dot");
     }
 }

@@ -15,6 +15,9 @@ Modalidade: Trabalho individual ou em duplas.
 2. Utilizar como base os esqueletos de código disponíveis em: no repositório de exemplos da turma. Escolha entre as linguagens de programação C++ ou Java para realizar a implementação.
 3. Gerar arquivos de visualização da árvore a partir do caminhamento pré-ordem. Para isso, utilize a linguagem DOT (Graphviz).
 
+### Comando para Baixar o Repositório:
+```git clone -b algoritmos-estrutura-dados/binary-tree https://github.com/stahlbia/algoritmos-unisinos.git --single-branch```
+
 ### Procedimento para Visualização dos Arquivos .dot (Passado pela Professora):
 
 1. Baixe e instale o GraphViz a partir do site oficial.

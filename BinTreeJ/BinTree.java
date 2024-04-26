@@ -42,6 +42,7 @@ public class BinTree {
 
     private void preOrder(Node root) {
         if (root == null) return;
+        System.out.print(root.data + " ");
         preOrder(root.left);
         preOrder(root.right);
     }
@@ -53,6 +54,7 @@ public class BinTree {
     private void central(Node root) {
         if (root == null) return;
         central(root.left);
+        System.out.print(root.data + " ");
         central(root.right);
     }
 
@@ -64,6 +66,7 @@ public class BinTree {
         if (root == null) return;
         postOrder(root.left);
         postOrder(root.right);
+        System.out.print(root.data + " ");
     }
 
     public void remove(int data) {

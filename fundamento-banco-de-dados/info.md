@@ -15,3 +15,16 @@ Turma: GR16031-00637
 Sala: A01 118
 
 Professor: Alex Roehrs
+
+## Notas Grau A
+
+* Prova | Peso 7.0: 9.2/10.0
+* Trabalho | Peso 2.0: 10.0/10.0
+* Exercícios | Peso 1.0:
+  * Lista de Exercícios 1: 10.0/10.0
+  * Lista de Exercícios 2: 0.0/10.0
+  * Lista de Exercícios 3: 10.0/10.0
+  * Lista de Exercícios 4: 10.0/10.0
+  * Lista de Exercícios 5: 10.0/10.0
+  * Lista de Exercícios 6: 0.0/10.0
+* Nota GA: 9.1/10.0

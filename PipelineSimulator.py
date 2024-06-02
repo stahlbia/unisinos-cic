@@ -63,6 +63,16 @@ class PipelineSimulator:
         else:
             self.fetchStep = None
 
+    def decode(self):
+        if self.fetchStep:
+            self.decodeStep = self.fetchStep
+            if self.decodeStep.opcode in ["add", "addi", "beq", "noop", "halt", "lw"]:
+                self.decodeStep.validate = True
+            else:
+                self.decodeStep.validate = False
+        else:
+            self.decodeStep = None
+
     def print_pipeline_state(self):
         print(f"\n\033[1m--- Pipeline State | PC: {self.pc} ---\033[0m")
         print(f"Fetch Step: {self.fetchStep}")
@@ -78,4 +88,5 @@ class PipelineSimulator:
         while self.pc < len(self.instructions) or any([self.fetchStep, self.decodeStep, self.executeStep, self.memoryStep]):
             self.print_pipeline_state()
             input("\n\033[32mPress Enter to continue...\033[0m")
+            self.decode()
             self.fetch()

@@ -1,8 +1,7 @@
 ### Requirements:
 
-* [ ] Read from the program memory (.txt with instructions to a vector with the instructions)
+* [X] Read from the program memory (.txt with instructions to a vector with the instructions)
 * [ ] Simulate the pipeline with the 5 stages
-
   * [ ] fetch
   * [ ] decode
   * [ ] execute
@@ -11,7 +10,6 @@
 * [ ] Registers from R0 to R31 (R0 fixed in zero)
 
 ### Supported Instructions:
-
 - ADD
 - ADDI
 - SUB
@@ -32,7 +30,6 @@
 |   halt   |       0b110       | Increment the`PC` (as with all instructions), then halt the machine (let the simulator notice that the machine halted).                                                 |
 
 ### Suggested struct of instructions
-
 ```
 Struct {
     Opcode

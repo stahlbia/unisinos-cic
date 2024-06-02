@@ -2,12 +2,12 @@
 
 * [X] Read from the program memory (.txt with instructions to a vector with the instructions)
 * [ ] Simulate the pipeline with the 5 stages
-  * [ ] fetch
+  * [X] fetch
   * [ ] decode
   * [ ] execute
   * [ ] memory
   * [ ] write back
-* [ ] Registers from R0 to R31 (R0 fixed in zero)
+* [X] Registers from R0 to R31 (R0 fixed in zero)
 
 ### Supported Instructions:
 - ADD

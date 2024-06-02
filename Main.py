@@ -8,5 +8,6 @@ def main():
     program_content = content.get_content()
 
     pipeline = PipelineSimulator(program_content)
+    pipeline.run()
 
 main()

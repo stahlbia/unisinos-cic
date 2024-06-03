@@ -5,7 +5,7 @@
   * [X] fetch
   * [X] decode
   * [X] execute
-  * [ ] memory
+  * [X] memory
   * [ ] write back
 * [X] Registers from R0 to R31 (R0 fixed in zero)
 

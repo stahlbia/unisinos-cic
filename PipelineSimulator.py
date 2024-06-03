@@ -92,6 +92,12 @@ class PipelineSimulator:
         else:
             self.executeStep = None
 
+    def memory_access(self):
+        if self.executeStep and self.executeStep.validate:
+            self.memoryStep = self.executeStep
+        else:
+            self.memoryStep = None
+
     def print_pipeline_state(self):
         print(f"\n\033[1m--- Pipeline State | PC: {self.pc} | Total Runs: {self.totalRuns} ---\033[0m")
         print(f"Fetch Step: {self.fetchStep}")
@@ -104,6 +110,7 @@ class PipelineSimulator:
     def run(self):
         while self.pc < len(self.instructions) or any([self.fetchStep, self.decodeStep, self.executeStep, self.memoryStep]):
             input("\n\033[32mPress Enter to continue...\033[0m")
+            self.memory_access()
             self.execute()
             self.decode()
             self.fetch()

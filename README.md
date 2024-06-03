@@ -3,8 +3,8 @@
 * [X] Read from the program memory (.txt with instructions to a vector with the instructions)
 * [ ] Simulate the pipeline with the 5 stages
   * [X] fetch
-  * [ ] decode
-  * [ ] execute
+  * [X] decode
+  * [X] execute
   * [ ] memory
   * [ ] write back
 * [X] Registers from R0 to R31 (R0 fixed in zero)

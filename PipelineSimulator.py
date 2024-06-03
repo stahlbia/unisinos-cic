@@ -79,6 +79,19 @@ class PipelineSimulator:
         else:
             self.decodeStep = None
 
+    def execute(self):
+        if self.decodeStep and self.decodeStep.validate:
+            if self.decodeStep.opcode == "add":
+                self.wb_value = (self.decodeStep.op1, self.registers[self.decodeStep.op2] + self.registers[self.decodeStep.op3])
+            elif self.decodeStep.opcode == "beq":
+                if self.registers[self.decodeStep.op1] == self.registers[self.decodeStep.op2]:
+                    self.pc = self.labels[self.decodeStep.op3] # TODO
+            elif self.decodeStep.opcode == "halt":
+                self.pc = len(self.instructions)  # Force end of instructions
+            self.executeStep = self.decodeStep
+        else:
+            self.executeStep = None
+
     def print_pipeline_state(self):
         print(f"\n\033[1m--- Pipeline State | PC: {self.pc} | Total Runs: {self.totalRuns} ---\033[0m")
         print(f"Fetch Step: {self.fetchStep}")
@@ -91,6 +104,7 @@ class PipelineSimulator:
     def run(self):
         while self.pc < len(self.instructions) or any([self.fetchStep, self.decodeStep, self.executeStep, self.memoryStep]):
             input("\n\033[32mPress Enter to continue...\033[0m")
+            self.execute()
             self.decode()
             self.fetch()
             self.totalRuns += 1

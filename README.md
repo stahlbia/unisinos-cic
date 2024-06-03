@@ -1,3 +1,9 @@
+## Como rodar o projeto no VSCode:
+
+- É necessário ter a extensão de python instalada no VSCode, e uma versão de Python instalada
+- Clone o repositório em uma pasta local
+- Com o terminal aberto na pasta dos arquivos, digite o comando `python3 Main.py` que o arquivo main irá rodar o programa
+
 ### Requirements:
 
 * [X] Read from the program memory (.txt with instructions to a vector with the instructions)
@@ -10,6 +16,7 @@
 * [X] Registers from R0 to R31 (R0 fixed in zero)
 
 ### Supported Instructions:
+
 - ADD
 - ADDI
 - SUB
@@ -30,6 +37,7 @@
 |   halt   |       0b110       | Increment the`PC` (as with all instructions), then halt the machine (let the simulator notice that the machine halted).                                                 |
 
 ### Suggested struct of instructions
+
 ```
 Struct {
     Opcode

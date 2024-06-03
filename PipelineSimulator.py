@@ -98,6 +98,16 @@ class PipelineSimulator:
         else:
             self.memoryStep = None
 
+    def write_back(self):
+        if self.memoryStep and self.memoryStep.validate:
+            if self.wb_value and self.memoryStep.opcode in ["add", "addi"]:
+                self.registers[self.wb_value[0]] = self.wb_value[1]
+                self.wb_value = None
+            if self.memoryStep.opcode in ["lw"]:
+                label = self.memoryStep.op3
+                key = self.labels[label]
+                self.registers[self.memoryStep.op2] = self.memory_data[key]
+
     def print_pipeline_state(self):
         print(f"\n\033[1m--- Pipeline State | PC: {self.pc} | Total Runs: {self.totalRuns} ---\033[0m")
         print(f"Fetch Step: {self.fetchStep}")
@@ -110,6 +120,7 @@ class PipelineSimulator:
     def run(self):
         while self.pc < len(self.instructions) or any([self.fetchStep, self.decodeStep, self.executeStep, self.memoryStep]):
             input("\n\033[32mPress Enter to continue...\033[0m")
+            self.write_back()
             self.memory_access()
             self.execute()
             self.decode()

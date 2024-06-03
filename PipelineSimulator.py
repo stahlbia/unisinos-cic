@@ -78,7 +78,7 @@ class PipelineSimulator:
                 self.decodeStep.validate = False
         else:
             self.decodeStep = None
-
+    
     def execute(self):
         if self.decodeStep and self.decodeStep.validate:
             if self.decodeStep.opcode == "add":
@@ -91,7 +91,7 @@ class PipelineSimulator:
             self.executeStep = self.decodeStep
         else:
             self.executeStep = None
-
+    
     def memory_access(self):
         if self.executeStep and self.executeStep.validate:
             self.memoryStep = self.executeStep
@@ -127,4 +127,3 @@ class PipelineSimulator:
             self.fetch()
             self.totalRuns += 1
             self.print_pipeline_state()
-            self.fetch()

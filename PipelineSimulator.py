@@ -6,6 +6,7 @@ class PipelineSimulator:
         self.labels = self.find_labels(program_file)
         self.memory_data = self.load_memory(program_file)
         self.pc = 0  # Program counter
+        self.totalRuns = 0 # Count how many runs were make
         self.fetchStep = None  # Instruction fetched (IF/ID pipeline register)
         self.decodeStep = None  # Instruction decoded (ID/EX pipeline register)
         self.executeStep = None  # Instruction executed (EX/MEM pipeline register)
@@ -20,8 +21,13 @@ class PipelineSimulator:
         for line in lines:
             instruction_parts = line.split()
             if instruction_parts:
-                opcode = instruction_parts[0]
-                operands = instruction_parts[1:]
+                if instruction_parts[0].endswith(":"):
+                    opcode = instruction_parts[1]
+                    operands = instruction_parts[2:]
+                else:
+                    opcode = instruction_parts[0]
+                    operands = instruction_parts[1:]
+                    
                 instruction_object = Instruction(opcode, *operands)
                 instructions_list.append(instruction_object)
         
@@ -74,19 +80,19 @@ class PipelineSimulator:
             self.decodeStep = None
 
     def print_pipeline_state(self):
-        print(f"\n\033[1m--- Pipeline State | PC: {self.pc} ---\033[0m")
+        print(f"\n\033[1m--- Pipeline State | PC: {self.pc} | Total Runs: {self.totalRuns} ---\033[0m")
         print(f"Fetch Step: {self.fetchStep}")
         print(f"Decode Step: {self.decodeStep}")
         print(f"Execution Step: {self.executeStep}")
         print(f"Memory Step: {self.memoryStep}")
-        print("Registers: ")
-        for i, value in self.registers.items():
-            print(f"{i}: {value}", end=", ")
-        print(f"\nMemories: {self.memory_data}")
+        print(f"Registers: {self.registers}")
+        print(f"Memories: {self.memory_data}")
 
     def run(self):
         while self.pc < len(self.instructions) or any([self.fetchStep, self.decodeStep, self.executeStep, self.memoryStep]):
-            self.print_pipeline_state()
             input("\n\033[32mPress Enter to continue...\033[0m")
             self.decode()
+            self.fetch()
+            self.totalRuns += 1
+            self.print_pipeline_state()
             self.fetch()

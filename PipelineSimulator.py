@@ -12,7 +12,7 @@ class PipelineSimulator:
         self.executeStep = None  # Instruction executed (EX/MEM pipeline register)
         self.memoryStep = None  # Instruction memory accessed (MEM/WB pipeline register)
         self.wb_value = None # Write-back result
-        self.registers = {f'{i}': 0 for i in range(10)}  # Register file with 32 registers
+        self.registers = {f'{i}': 0 for i in range(32)}  # Register file with 32 registers
 
     def import_program_file(self, entire_file):
         instructions_list = []

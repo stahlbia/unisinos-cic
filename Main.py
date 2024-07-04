@@ -4,6 +4,7 @@ import numpy as np
 from SortMethods import SortMethods
 from util import generate_sorted_array, generate_reversed_array, generate_random_array
 import os
+from datetime import datetime
 
 def measure_time(sort_func, arr):
     start_time = time.time_ns()
@@ -30,6 +31,8 @@ def main():
         "Quick Sort": SortMethods.quick_sort,
     }
 
+    # Register the start time
+    start_datetime = datetime.now()
     start_time = time.time()
     total_steps = len(scenarios) * len(array_sizes) * len(sort_methods) * 10
     current_step = 0
@@ -47,6 +50,7 @@ def main():
                     current_step += 1
                     progress = (current_step / total_steps) * 100
                     os.system('cls' if os.name == 'nt' else 'clear')
+                    print(f"Start Time: {start_datetime.strftime('%Y-%m-%d %H:%M:%S')}")
                     print(f"Progress: {progress:.2f}%")
             
             # Calculate mean and standard deviation

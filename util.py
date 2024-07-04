@@ -9,6 +9,6 @@ def generate_reversed_array(n):
 
 def generate_random_array(n, unique=True):
     if unique:
-        return random.sample(range(n * 2), n)
+        return random.sample(range(n * 2), n)  # Garante que os elementos são únicos
     else:
-        return [random.randint(0, n) for _ in range(n)]
+        return [random.randint(0, n) for _ in range(n)]  # Permite elementos repetidos

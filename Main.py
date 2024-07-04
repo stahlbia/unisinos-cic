@@ -56,9 +56,9 @@ def main():
         
         for size in array_sizes:
             times = {method: [] for method in sort_methods.keys()}
+            arr = scenario_func(size)  # Gera um novo array para o cenário e tamanho atuais
             
             for _ in range(10):
-                arr = scenario_func(size)
                 for method_name, sort_func in sort_methods.items():
                     array_copy = arr.copy()  # Certifique-se de copiar o array para cada execução
                     time_taken = measure_time(sort_func, array_copy)

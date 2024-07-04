@@ -27,7 +27,7 @@ def save_results_to_md(results, scenario_name, array_sizes, sort_methods):
     print(f"Resultados salvos em {filename}")
 
 def main():
-    array_sizes = [2**i for i in range(7, 14)]  # Sizes from 128 to 65536
+    array_sizes = [2**i for i in range(7, 15)]  # Sizes from 128 to 65536
     scenarios = {
         "sorted": generate_sorted_array,
         "reversed": generate_reversed_array,

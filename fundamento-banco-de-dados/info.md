@@ -28,3 +28,18 @@ Professor: Alex Roehrs
   * Lista de Exercícios 5: 10.0/10.0
   * Lista de Exercícios 6: 0.0/10.0
 * Nota GA: 9.1/10.0
+
+## Notas Grau B
+
+* Prova | Peso 7.0: 9.4/10.0
+* Trabalho | Peso 2.0: 10.0/10.0
+* Exercícios | Peso 1.0:
+  * Lista de Exercícios 7: 0.0/10.0
+  * Lista de Exercícios 8: 0.0/10.0
+  * Lista de Exercícios 9: 0.0/10.0
+* Nota GB: 8.6/10.0
+
+## Notas Finais
+* Nota GA: 9.1/10.0
+* Nota GB: 8.6/10/0
+* Nota Final: 8.8/10.0

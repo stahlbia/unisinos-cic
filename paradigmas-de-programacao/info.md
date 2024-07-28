@@ -22,3 +22,10 @@ Professor: Cassiano Ricardo Neubauer MorallesAlex Roehr
 * Formulário Programação Orientada a Objetos | Peso 5.0: 10.0/10.0
 
 ## Notas Grau B
+* Desafio | Peso 5.0: 10.0/10.0
+* Prova | Peso 5.0: 10.0/10.0
+
+## Nota Final
+* Nota GA: 10.0
+* Nota GB: 10.0
+* Nota Final: 10.0

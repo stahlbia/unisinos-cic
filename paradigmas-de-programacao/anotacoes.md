@@ -107,3 +107,42 @@ Falaremos sobre diversos pontos, como:
 * Implementação de construções orientadas a objetos.
 
 ---
+
+### Semana 5 - 14.06.2024 - Programação Funcional e Lógica
+Nessa semana, iremos estudaros paradigmas de programação funcional e lógica bem como trataremos dos conceitos e exemplos de seu uso.
+
+Para iniciarmos essa etapa e aprofundarmos os conhecimentos, vamos conhecer os materiais de estudos? Utilize da melhor forma possível todos os recursos disponíveis nesta semana!
+
+#### ESTUDO DIRIGIDO
+
+Programação lógica e programação funcional são paradigmas de programação que oferecem abordagens distintas para resolver problemas computacionais, cada uma com suas próprias vantagens e características únicas. A programação lógica, exemplificada pela linguagem Prolog, baseia-se em regras e fatos para expressar a lógica de um problema. Nessa abordagem, os programas são declarativos, especificando "o que" precisa ser feito em vez de "como" fazê-lo. Isso permite uma maior expressividade e clareza na definição de problemas complexos, como aqueles encontrados em inteligência artificial e sistemas de inferência.
+
+Por outro lado, a programação funcional, com linguagens como Haskell e Lisp, enfatiza o uso de funções matemáticas puras e a imutabilidade dos dados. Este paradigma promove a composição de funções e o uso de expressões, em vez de instruções sequenciais, para definir o comportamento do programa. A programação funcional é conhecida por facilitar a criação de código mais conciso, modular e testável, além de proporcionar maior facilidade em paralelizar e distribuir a computação, um aspecto essencial em sistemas modernos de processamento de grandes volumes de dados. Juntas, essas abordagens oferecem aos desenvolvedores ferramentas poderosas e flexíveis para enfrentar uma ampla variedade de desafios computacionais.
+
+Vamos explorar os conceitos desses dois paradigmas de programação.
+
+Falaremos sobre diversos pontos, como: 
+
+* Funções matemáticas
+* Fundamentos das linguagens de programação funcional
+* Uma breve introdução ao cálculo de predicados
+* Uma visão geral da programação lógica
+
+---
+
+### Semana 6 | 21.06.2024 - Tópicos Especiais
+No contexto das linguagens de programação, a concorrência refere-se à capacidade de um sistema de executar múltiplas tarefas simultaneamente. Essa abordagem permite que programas realizem operações de forma paralela, otimizando o uso dos recursos do sistema e melhorando o desempenho em aplicações complexas. A implementação de concorrência pode ser feita através de threads, processos ou até mesmo corrotinas, cada uma com suas próprias características e desafios. É crucial entender como gerenciar o acesso concorrente a recursos compartilhados para evitar problemas como condições de corrida, onde o resultado do programa depende da ordem imprevisível de execução das threads.
+
+A corretude é uma propriedade fundamental na programação concorrente, garantindo que um programa execute conforme o esperado, independentemente do interleaving das operações concorrentes. Para alcançar corretude, técnicas como sincronização, bloqueios (locks) e estruturas de dados thread-safe são frequentemente empregadas. Além disso, a manipulação de eventos é uma técnica essencial para lidar com operações assíncronas e concorrentes, onde eventos são usados para sinalizar a ocorrência de ações específicas que podem ser tratadas de forma eficiente. Compreender esses conceitos e suas interações é vital para o desenvolvimento de sistemas robustos e eficientes em um ambiente de programação moderna.
+
+Para iniciarmos essa etapa e aprofundarmos os conhecimentos, vamos conhecer os materiais de estudos? Utilize da melhor forma possível todos os recursos disponíveis nesta semana!
+
+#### ESTUDO DIRIGIDO
+
+A corretude em linguagens de programação é de fundamental importância, pois garante que os programas executem conforme o esperado, produzindo resultados precisos e confiáveis. Em um ambiente de desenvolvimento, a corretude implica que o código implementa corretamente os requisitos e especificações, evitando erros que podem levar a comportamentos inesperados, falhas de segurança ou perda de dados. Especialmente em sistemas críticos, como aqueles utilizados em finanças, saúde e controle de tráfego aéreo, a corretude é essencial para assegurar a integridade e a segurança das operações. Técnicas como testes rigorosos, verificação formal e análise estática de código são empregadas para alcançar e manter a corretude, contribuindo para a criação de software robusto e confiável.
+
+Vamos explorar os conceitos, como: 
+
+* Manipulação de eventos
+* Concorrência
+* Corretude

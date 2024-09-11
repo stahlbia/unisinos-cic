@@ -1,11 +1,13 @@
-# GitHub Unisinos
+# Ana Beatriz Stahl
 
-Repositório dedicado para guardar os arquivos e projetos de aula, sejam eles algoritmos de programação ou documentos.
+## Respostas Lista de Exercícios 1
 
-# Organização de arquivos
+### Questões Teóricas:
 
-A ideia é ter uma pasta para cada cadeira/disciplina cursada, onde lá irá constar todos os arquivos da mesma. As pastas não precisam indicar o semestre no qual a disciplina foi cursada, mas é interessante adicionar um arquivo readme.md (como este) para identificar as informações em relação a isso.
+1. O que é a GLSL? Quais os dois tipos de shaders são obrigatórios no pipeline programável
+da versão atual que trabalhamos em aula e o que eles processam?
 
-# Como rodar projetos Java
+2. O que são primitivas gráficas? Como fazemos o armazenamento dos vértices na OpenGL?
 
-# Como rodar projetos C++
+3. Explique o que é VBO, VAO e EBO, e como se relacionam (se achar mais fácil, pode fazer
+um gráfico representando a relação entre eles). 

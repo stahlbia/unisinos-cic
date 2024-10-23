@@ -17,7 +17,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 // Protótipos das funções
 int setupShader();
-int setupGeometry();
+int setupSpiralGeometry(float initialRadius, float radiusIncrement, int segments, float revolutions);
 
 // Dimensões da janela
 const GLuint WIDTH = 800, HEIGHT = 600;
@@ -58,38 +58,30 @@ int main()
 
     // Compilando e buildando o programa de shader
     GLuint shaderID = setupShader();
-
-	// Gerando um buffer simples, com a geometria de um triângulo
-	GLuint VAO = setupGeometry();
+    
+    // Configurando as formas
+    GLuint spiralVAO = setupSpiralGeometry(0.1f, 0.1f, 30, 5.0f); // Espiral
 
     GLint colorLoc = glGetUniformLocation(shaderID, "inputColor");
     glUseProgram(shaderID);
 
     while (!glfwWindowShouldClose(window))
-	{
-		// Checa se houveram eventos de input (key pressed, mouse moved etc.) e chama as funções de callback correspondentes
-		glfwPollEvents();
+    {
+        glfwPollEvents();
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
 
-		// Limpa o buffer de cor
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // cor de fundo
-		glClear(GL_COLOR_BUFFER_BIT);
+        // Desenha a espiral
+        glBindVertexArray(spiralVAO);
+        glUniform4f(colorLoc, 1.0f, 0.0f, 0.0f, 1.0f); // Cor da espiral (vermelho)
+        glDrawArrays(GL_LINE_STRIP, 0, 100); // Desenha a espiral
 
-		glLineWidth(10);
-		glPointSize(20);
+        glBindVertexArray(0);
 
-		// Renderiza o triângulo
-		glBindVertexArray(VAO);
-		glUniform4f(colorLoc, 1.0f, 0.0f, 0.0f, 1.0f); // Define a cor para o triângulo (vermelho, neste caso)
+        glfwSwapBuffers(window);
+    }
 
-		// Corrigido para usar glDrawElements
-		glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
-
-		glBindVertexArray(0);
-
-		glfwSwapBuffers(window);
-	}
-
-    glDeleteVertexArrays(1, &VAO);
+    glDeleteVertexArrays(1, &spiralVAO);
     glfwTerminate();
     return 0;
 }
@@ -142,48 +134,34 @@ int setupShader()
     return shaderProgram;
 }
 
-int setupGeometry()
+int setupSpiralGeometry(float initialRadius, float radiusIncrement, int segments, float revolutions)
 {
-    // Posição XYZ e Cor RGB para cada vértice
-    GLfloat vertices[] = {
-        // Posição       // Cor
-        0.0f,  0.5f,    1.0f, 0.0f, 0.0f, // P1
-        -0.5f, -0.5f,    0.0f, 1.0f, 0.0f, // P2
-        0.5f, -0.5f,    0.0f, 0.0f, 1.0f  // P3
-    };
+    std::vector<GLfloat> vertices;
 
-    // Índices para formar um triângulo
-    unsigned int indices[] = {
-        0, 1, 2 // P1, P2, P3
-    };
+    // A quantidade de segmentos por revolução
+    float angleStep = 2.0f * M_PI / segments;
+    float totalAngle = revolutions * 2.0f * M_PI;
 
-    GLuint VBO, VAO, EBO;
+    // Gerar os vértices para a espiral
+    for (float angle = 0.0f; angle <= totalAngle; angle += angleStep) {
+        float currentRadius = initialRadius + (radiusIncrement * angle / (2.0f * M_PI));
+        float x = currentRadius * cos(angle);
+        float y = currentRadius * sin(angle);
+        vertices.push_back(x);
+        vertices.push_back(y);
+        vertices.push_back(0.0f); // z
+    }
 
-    // Geração do identificador do VAO, VBO e EBO
-    glGenVertexArrays(1, &VAO);
+    GLuint VBO, VAO;
     glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-
-    // Vinculando VAO
-    glBindVertexArray(VAO);
-
-    // Configurando VBO
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(GLfloat), vertices.data(), GL_STATIC_DRAW);
 
-    // Configurando EBO
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    // Atributos de posição
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)0);
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
     glEnableVertexAttribArray(0);
-
-    // Atributos de cor
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (GLvoid*)(2 * sizeof(GLfloat)));
-    glEnableVertexAttribArray(1);
-
-    // Desvinculando o VAO
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
     return VAO;

@@ -11,7 +11,8 @@
             "compilerPath": "C:/msys64/ucrt64/bin/g++.exe",
             "intelliSenseMode": "gcc-x64",
             "includePath": [
-                "${myIncludePath}"
+                "${myIncludePath}",
+                "${workspaceFolder}/dependencies/glm"
             ],
             "defines": [
                 "_DEBUG",

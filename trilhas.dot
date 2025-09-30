@@ -1,0 +1,18 @@
+graph Parque {
+    node [shape=rectangle, style=filled, color=black, fillcolor="#02852c"];
+    edge [color=lightgrey, fontcolor=lightgrey];
+    layout="circo";
+    0 [label="Bosque de Plátanos"];
+    1 [label="Clareira"];
+    2 [label="Gruta"];
+    3 [label="Campo de Flores"];
+    4 [label="Cachoeira"];
+
+    0 -- 1 [label="10", color=black, fontcolor=black];
+    0 -- 3 [label="12"];
+    1 -- 2 [label="9"];
+    1 -- 3 [label="6", color=black, fontcolor=black];
+    2 -- 3 [label="3", color=black, fontcolor=black];
+    2 -- 4 [label="11"];
+    3 -- 4 [label="7", color=black, fontcolor=black];
+}

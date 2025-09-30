@@ -1,22 +1,63 @@
 #!/bin/bash
 
-# # --- Parâmetros ---
-# SERVER_IP="172.17.0.2"
-# SERVER_USER_HOST="root@172.17.0.2" 
-# DURACAO=30 # segundos
-# REPETICOES=10
-# PACOTES=(128 256 512 1024 1280)
-# BANDAS=("1000M" "800M")
-
 # --- Parâmetros ---
-SERVER_IP="169.254.117.167"
-SERVER_USER_HOST="root@169.254.117.167"
-PORT="5201"
+SERVER_IP="172.17.0.2"
+USER_HOST="root"
+IPERF_PORT="5201"
 SSH_PORT="2222"
-DURACAO=10 # segundos
-REPETICOES=2
-PACOTES=(128 256)
-BANDAS=("1000M" "800M")
+DURATION=30 # segundos
+REPETITIONS=10
+PACKETS=(128 256 512 1024 1280)
+BANDWIDTH=("1000M" "800M")
+
+# --- Processa argumentos da linha de comando ---
+# Este laço 'while' verifica e substitui os valores padrão pelos que forem passados
+while [[ $# -gt 0 ]]; do
+  key="$1"
+  case $key in
+    -server_ip)
+      SERVER_IP="$2"
+      shift 2
+      ;;
+    -user_host)
+      USER_HOST="$2"
+      shift 2
+      ;;
+    -iperf_port)
+      IPERF_PORT="$2"
+      shift 2
+      ;;
+    -ssh_port)
+      SSH_PORT="$2"
+      shift 2
+      ;;
+    -duration)
+      DURATION="$2"
+      shift # remove a chave
+      shift # remove o valor
+      ;;
+    -repetitions)
+      REPETITIONS="$2"
+      shift 2 # outra forma de remover a chave e o valor
+      ;;
+    -packets)
+      # Para arrays, passamos uma string com espaços e a convertemos
+      PACKETS=($2)
+      shift 2
+      ;;
+    -bandwidth)
+      BANDWIDTH=($2)
+      shift 2
+      ;;
+    *)
+      # argumento desconhecido
+      echo "Argumento desconhecido: $1"
+      exit 1
+      ;;
+  esac
+done
+
+SERVER_USER_HOST="$USER_HOST@$SERVER_IP"
 
 # Diretório para salvar os resultados locais e remotos
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
@@ -30,13 +71,13 @@ echo "Resultados locais serão salvos em: $RESULT_DIR_LOCAL"
 echo "Resultados do servidor serão salvos em $SERVER_USER_HOST:$RESULT_DIR_REMOTO"
 
 # --- Loop de Execução ---
-for banda in "${BANDAS[@]}"; do
-  for pacote in "${PACOTES[@]}"; do
-    echo "------------------------------------------------------------"
+for banda in "${BANDWIDTH[@]}"; do
+  for pacote in "${PACKETS[@]}"; do
+    echo "----------------------------------------------------------------------"
     echo "Iniciando teste: Largura de Banda=${banda}, Tamanho do Pacote=${pacote} bytes"
-    echo "------------------------------------------------------------"
-    for i in $(seq 1 $REPETICOES); do
-      echo "--> Executando repetição $i de $REPETICOES..."
+    echo "----------------------------------------------------------------------"
+    for i in $(seq 1 $REPETITIONS); do
+      echo "--> Executando repetição $i de $REPETITIONS..."
 
       # Nomes dos arquivos de log
       LOG_BASE="banda_${banda}_pacote_${pacote}_rep_${i}"
@@ -53,7 +94,7 @@ for banda in "${BANDAS[@]}"; do
       ssh "-p $SSH_PORT" "$SERVER_USER_HOST" "sar -u 1 35 > ${RESULT_DIR_REMOTO}/${LOG_CPU_SERVIDOR} &"
 
       # Comando iperf3
-      iperf3 -c "$SERVER_IP" -p "$PORT" -u -b "$banda" -l "$pacote" -t "$DURACAO" -J --logfile "$LOG_IPERF"
+      iperf3 -c "$SERVER_IP" -p "$IPERF_PORT" -u -b "$banda" -l "$pacote" -t "$DURATION" -J --logfile "$LOG_IPERF"
 
       # Espera a captura de CPU LOCAL terminar
       wait $PID_SAR_CLIENTE
@@ -66,7 +107,7 @@ echo "Todos os testes foram concluídos!"
 echo "Copiando arquivos de log da CPU do servidor..."
 
 # Ao final de tudo, copia os arquivos do servidor para o diretório local !!
-scp "${SERVER_USER_HOST}:${RESULT_DIR_REMOTO}/*.txt" "${RESULT_DIR_LOCAL}/"
+scp -P ${SSH_PORT} "${SERVER_USER_HOST}:${RESULT_DIR_REMOTO}/*.txt" "${RESULT_DIR_LOCAL}/"
 
 echo "Arquivos do servidor copiados com sucesso para $RESULT_DIR_LOCAL."
 echo "Processo finalizado."

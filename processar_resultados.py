@@ -60,7 +60,7 @@ def processar_diretorio(diretorio):
                     'cpu_servidor_%': cpu_servidor
                 })
             except (IOError, json.JSONDecodeError, KeyError):
-                print(f"Erro ao processar o arquivo: {filename} {IOError, json.JSONDecodeError, KeyError}")
+                print(f"Erro ao processar o arquivo: {filename}")
                 continue
     
     return pd.DataFrame(dados)
@@ -89,4 +89,4 @@ tabela_sem_roteador.to_csv('tabela_final_sem_roteador.csv', index=False)
 tabela_com_roteador.to_csv('tabela_final_com_roteador.csv', index=False)
 
 print("Tabela Sem Roteador: Salva")
-print("\nTabela Com Roteador: Salva")
+print("Tabela Com Roteador: Salva")

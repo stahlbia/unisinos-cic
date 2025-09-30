@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y \
     openssh-client \
     python3 \
     python3-pip \
-    python3-venv && \
+    python3-venv
 
 # Expõe a porta 22 para permitir conexões SSH externas
 EXPOSE 22

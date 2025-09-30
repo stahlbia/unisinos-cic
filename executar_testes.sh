@@ -9,9 +9,9 @@
 # BANDAS=("1000M" "800M")
 
 # --- Parâmetros ---
-SERVER_IP="192.168.10.1"
-SERVER_USER_HOST="root@192.168.10.1"
-PORT="5000"
+SERVER_IP="169.254.117.167"
+SERVER_USER_HOST="root@169.254.117.167"
+PORT="5201"
 SSH_PORT="2222"
 DURACAO=10 # segundos
 REPETICOES=2
@@ -24,7 +24,7 @@ RESULT_DIR_LOCAL="resultados_${TIMESTAMP}"
 RESULT_DIR_REMOTO="resultados_servidor_${TIMESTAMP}" # Diretório no servidor
 
 mkdir -p "$RESULT_DIR_LOCAL"
-ssh "$SERVER_USER_HOST" "mkdir -p $RESULT_DIR_REMOTO"
+ssh "-p $SSH_PORT" "$SERVER_USER_HOST" "mkdir -p $RESULT_DIR_REMOTO"
 
 echo "Resultados locais serão salvos em: $RESULT_DIR_LOCAL"
 echo "Resultados do servidor serão salvos em $SERVER_USER_HOST:$RESULT_DIR_REMOTO"
@@ -50,7 +50,7 @@ for banda in "${BANDAS[@]}"; do
 
       # Inicia a captura de CPU no SERVIDOR (remoto) em background !!
       # O comando é executado via SSH e o '&' no final o libera imediatamente
-      ssh "$SERVER_USER_HOST" "sar -u 1 35 > ${RESULT_DIR_REMOTO}/${LOG_CPU_SERVIDOR} &"
+      ssh "-p $SSH_PORT" "$SERVER_USER_HOST" "sar -u 1 35 > ${RESULT_DIR_REMOTO}/${LOG_CPU_SERVIDOR} &"
 
       # Comando iperf3
       iperf3 -c "$SERVER_IP" -p "$PORT" -u -b "$banda" -l "$pacote" -t "$DURACAO" -J --logfile "$LOG_IPERF"

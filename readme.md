@@ -12,19 +12,19 @@ Antes de iniciar os testes, garanta que o ambiente esteja configurado corretamen
 
 Faça o setup dos containers da seguinte forma
 
-1. Baixar imagem oficial do Ubuntu
+1 - Baixar imagem oficial do Ubuntu
 
 `sudo docker pull ubuntu`
 
-2. Iniciar um novo container em segundo plano com um terminal interativo:
+2 - Iniciar um novo container em segundo plano com um terminal interativo:
 
 `docker run -itd --name micro-X -p 5000:5000 -p 2222:22 --privileged ubuntu`
 
-3. Entrar no container:
+3 - Entrar no container:
 
 `docker exec -it micro-X /bin/bash`
 
-4. Instalar apps:
+4 - Instalar apps:
 
 `su -`
 `apt-get update`
@@ -33,7 +33,7 @@ Faça o setup dos containers da seguinte forma
 `sudo apt-get install iperf3 sysstat -y`
 `sudo apt install net-tools iproute2 -y`
 
-5. Para sair do container:
+5 - Para sair do container:
 
 `exit`
 `docker stop micro-X`
@@ -55,6 +55,7 @@ Se a conexão ssh não funcionar, rode os seguintes comandos:
 `nano /etc/ssh/sshd_config` -> encontre a linha que diz "#PermitRootLogin prohibit-password" e troque por "PermitRootLogin yes".
 `kill $(pgrep sshd)`
 `/usr/sbin/sshd`
+`ps aux | grep sshd` -> verificar se o serviço tá on
 
 #### 1.1.3 No computador Micro B
 
@@ -62,7 +63,7 @@ Esse computador vai trabalhar com o cliente, para fazer o setup completo será n
 
 `sudo apt-get install openssh-client -y`
 `ssh-keygen -t rsa`
-`ssh-copy-id root@172.17.0.2` -> a senha é a mesma configurada no micro A
+`ssh-copy-id -p 2222 root@172.17.0.2` -> a senha é a mesma configurada no micro A
 
 É importante fazer o setup do python3 para poder rodar os scripts
 
@@ -73,22 +74,38 @@ Esse computador vai trabalhar com o cliente, para fazer o setup completo será n
 `pip3 install pandas matplotlib`
 `deactivate` -> para desativar o env
 
+#### 1.1.4 Outra alternativa
+
+Outra alternativa é criar as imagens do docker com os Dockerfiles nas pastas `micro-a` e `micro-b`. Para isso, de um comando `cd micro-x` para entrar na pasta, e execute `docker build -t nome-ambiente .`. Para abrir o container no terminal use `$ docker run -itd --name micro-x -p 5201:5201 -p 2222:22 --privileged nome-ambiente`.
+
 ### 1.2. Configuração de Rede
 
 #### **Cenário 1: Sem Roteador (Conexão Direta)**
 
 1. Conecte o Micro A diretamente ao Micro B com um cabo Ethernet.
-2. Descubra o IP de cada dispositivo através do comando `ipconfig` 
+2. Descubra o IP de cada dispositivo através do comando `ipconfig`
 3. Verifique a conexão:
-  * No Micro B, execute: `ping {{IP do Micro A}}`
+
+* No Micro B, execute: `ping {{IP do Micro A}}`
+
+##### Descobrindo o IP de cada máquina
+
+###### MacOS
+
+`ifconfig | grep "inet "` -> para pegar o valor do ip (169.254.225.132)
+
+###### Windows 11
+
+`ipconfig` -> pegar o Endereço IPv4 do Adaptador Ethernet Ethernet (169.254.7.56)
 
 #### **Cenário 2: Com Roteador**
 
 1. Conecte o Micro A a uma porta LAN do roteador.
 2. Conecte o Micro B a outra porta LAN do roteador.
-3. Descubra o IP de cada dispositivo através do comando `ipconfig` 
+3. Descubra o IP de cada dispositivo através do comando `ipconfig`
 4. Verifique a conexão:
-  * No Micro B, execute: `ping {{IP do Micro A}}`
+
+* No Micro B, execute: `ping {{IP do Micro A}}`
 
 ## 2. Execução dos Testes
 
@@ -108,7 +125,7 @@ OBS1: Como são vários test cases, o script irá demorar cerca de 45 min para r
 
 OBS2: Rode o script uma vez para cada cenário de teste.
 
-## 3. Processamento dos Dados 
+## 3. Processamento dos Dados
 
 Agora com todas as informações dos testes, a melhor maneira de processar todos os dados é através de um script, nesse caso será em Python, utilizando a biblioteca `pandas`. Para isso, crie um arquivo através do comando `nano processar_resultados.py`, cole o script lá, após isso repita a sequência `ctrl + o; ENTER; ctrl + x`. Execute o arquivo com o comando `python3 processar_resultados.py`, isso irá gerar dois arquivos `.csv` com os dados.
 

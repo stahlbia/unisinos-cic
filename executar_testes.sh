@@ -9,8 +9,10 @@
 # BANDAS=("1000M" "800M")
 
 # --- Parâmetros ---
-SERVER_IP="172.17.0.2"
-SERVER_USER_HOST="root@172.17.0.2" 
+SERVER_IP="192.168.10.1"
+SERVER_USER_HOST="root@192.168.10.1"
+PORT="5000"
+SSH_PORT="2222"
 DURACAO=10 # segundos
 REPETICOES=2
 PACOTES=(128 256)
@@ -51,7 +53,7 @@ for banda in "${BANDAS[@]}"; do
       ssh "$SERVER_USER_HOST" "sar -u 1 35 > ${RESULT_DIR_REMOTO}/${LOG_CPU_SERVIDOR} &"
 
       # Comando iperf3
-      iperf3 -c "$SERVER_IP" -u -b "$banda" -l "$pacote" -t "$DURACAO" -J --logfile "$LOG_IPERF"
+      iperf3 -c "$SERVER_IP" -p "$PORT" -u -b "$banda" -l "$pacote" -t "$DURACAO" -J --logfile "$LOG_IPERF"
 
       # Espera a captura de CPU LOCAL terminar
       wait $PID_SAR_CLIENTE

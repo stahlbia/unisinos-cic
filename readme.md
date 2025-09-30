@@ -18,7 +18,7 @@ Faça o setup dos containers da seguinte forma
 
 2. Iniciar um novo container em segundo plano com um terminal interativo:
 
-`docker run -itd --name micro-X --privileged ubuntu`
+`docker run -itd --name micro-X -p 5000:5000 -p 2222:22 --privileged ubuntu`
 
 3. Entrar no container:
 
@@ -31,6 +31,7 @@ Faça o setup dos containers da seguinte forma
 `apt-get install sudo`
 `sudo apt install nano`
 `sudo apt-get install iperf3 sysstat -y`
+`sudo apt install net-tools iproute2 -y`
 
 5. Para sair do container:
 
@@ -97,7 +98,7 @@ Os testes serão automatizados com um simples script shell para garantir a repet
 
 No **Micro A (Servidor)**, execute o seguinte comando. Ele ficará aguardando as conexões do cliente.
 
-`iperf3 -s`
+`iperf3 -s -p 5000`
 
 ### 2.2. Executar o Script de Teste no Cliente
 

@@ -8,7 +8,7 @@ Antes de iniciar os testes, garanta que o ambiente esteja configurado corretamen
 
 ### 1.1 Criando os containers com o Dockerfile
 
-Para criar os containers com o Dockerfile é preciso primeiro criar a imagem de cada container em sua respectiva máquina. Para isso, de um comando `cd micro-x` para entrar na pasta com o Dockerfile, e execute `docker build -t nome-ambiente .`. Para iniciar o container rode o comando `docker run -itd --name micro-x -p 5201:5201 -p 2222:22 --privileged nome-ambiente`, e para executar o container rode o comamdo `docker exec -it micro-x /bin/bash`.
+Para criar os containers com o Dockerfile é preciso primeiro criar a imagem de cada container em sua respectiva máquina. Para isso, dê um comando `cd micro-x` para entrar na pasta com o Dockerfile, e execute `docker build -t nome-ambiente .`. Para iniciar o container rode o comando `docker run -itd --name micro-x -p 5201:5201 -p 2222:22 --privileged nome-ambiente`, e para executar o container rode o comando `docker exec -it micro-x /bin/bash`.
 
 #### 1.1.1 Dockerfile
 
@@ -18,7 +18,7 @@ O Dockerfile instala a versão mais recente do ubuntu e instala os pacotes e fer
 
 O comando `docker run` inicia o container, e para isso é necessário passar as seguintes tags:
 
-- `-itd`: a
+- `-itd`: executa o container de forma interativa `-i`, aloca um pseudo-TTY `-t` e roda em modo detached/background `-d`
 - `--name VALOR`: define qual vai ser o nome do container
 - `-p PORTA:PORTA`: mapeia a porta do container para a porta do computador. precisa pro ssh e pra usar o iperf3
 - `--privileged`: concede privilégios extendidos ao container
@@ -87,21 +87,23 @@ No **Micro A (Servidor)**, execute o seguinte comando. Ele ficará aguardando as
 
 `iperf3 -s`
 
-### 2.2 Executar o script de reste no cliente
+### 2.2 Executar o script de teste no cliente
 
 No **Micro B (Cliente)**, crie um arquivo através do comando `nano executar_testes.sh`, cole o script lá, após isso repita a sequência `ctrl + o; ENTER; ctrl + x`. Dê permissão de execução com o comando `chmod +x executar_testes.sh`, e execute com o comando `./executar_testes.sh`.
+
+No final, é necessário renomear as pastas que serão geradas pelo script de acordo com o cenário: `mv resultados_* resultados_sem_roteador` e `mv resultados_* resultados_com_roteador`
 
 OBS1: O script pode ser executado com parâmetros para mudar algumas informações como as seguintes:
 
 - `-server_ip`: passa o IP do Micro A
 - `-user_host`: passo o nome de usuário do Micro A (normalmente é "root")
-- `-iperf_port`: porta na qual o iperf3 foi programado para rodar (defaul=5201)
-- `-ssh_port`: porta na qual o ssh for programado para conectar (deaful=2222)
+- `-iperf_port`: porta na qual o iperf3 foi programado para rodar (default=5201)
+- `-ssh_port`: porta na qual o ssh for programado para conectar (default=2222)
 - `-duration`: tempo que cada execução levará em segundos
 - `-repetitions`: quantidade de vezes que cada test-case será repetido
 - `-packets`: tamanhos dos pacotes que serão testados
 - `-bandwidth`: tamanhos de banda que serão testados
-- exemplo: `./executar_testes.sh -server_ip 169.254.225.132 -user_host root -iperf_port 5210 -ssh_port 2222 -durantion 30 -repetitions 10 -packets "128 256 512 1024 1280" -bandwidth "800M 1000M"`
+- exemplo: `./executar_testes.sh -server_ip 169.254.225.132 -user_host root -iperf_port 5210 -ssh_port 2222 -duration 30 -repetitions 10 -packets "128 256 512 1024 1280" -bandwidth "800M 1000M"`
 
 OBS2: Como são vários test cases, o script irá demorar cerca de 45 min para rodar completamente.
 

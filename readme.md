@@ -8,11 +8,11 @@ Antes de iniciar os testes, garanta que o ambiente esteja configurado corretamen
 
 ### 1.1 Criando os containers com o Dockerfile
 
-Para criar os containers com o Dockerfile é preciso primeiro criar a imagem de cada container em sua respectiva máquina. Para isso, dê um comando `cd micro-x` para entrar na pasta com o Dockerfile, e execute `docker build -t nome-ambiente .`. Para iniciar o container rode o comando `docker run -itd --name micro-x -p 5201:5201/tcp -p 5201:5201/udp --privileged nome-ambiente`, e para executar o container rode o comando `docker exec -it micro-x /bin/bash`.
+Para criar os containers com o Dockerfile é preciso primeiro criar a imagem de cada container em sua respectiva máquina. Para isso execute `docker build -t nome-ambiente .` na pasta com o Dockerfile. Para iniciar o container rode o comando `docker run -itd --name micro-x -p 5201:5201/tcp -p 5201:5201/udp --privileged nome-ambiente`, e para executar o container rode o comando `docker exec -it micro-x /bin/bash`.
 
 #### 1.1.1 Dockerfile
 
-O Dockerfile instala a versão mais recente do ubuntu e instala os pacotes e ferramentas que serão necessários para executar os testes. Perceba que cada micro possui um Dockerfile diferente.
+O Dockerfile instala a versão mais recente do ubuntu e instala os pacotes e ferramentas que serão necessários para executar os testes. Os dois micros podem ser criados com o mesmo arquivo.
 
 #### 1.1.2 Comando docker run
 
@@ -93,6 +93,7 @@ OBS3: Rode o script uma vez para cada cenário de teste.
 
 Agora com todas as informações dos testes, a melhor maneira de processar todos os dados é através de um script, nesse caso será em Python, utilizando a biblioteca `pandas`. Para isso, crie um ambiente python através dos comandos:
 
+- `sudo install python3 python3-pip python3 venv`
 - `python3 -m venv redes-env`
 - `source ~/redes-env/bin/activate`
 - `pip3 install pandas matplotlib`

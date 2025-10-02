@@ -5,7 +5,7 @@ SERVER_IP="192.168.10.2"
 DURATION=30
 REPETITIONS=10
 PACKETS=(128 256 512 1024 1280)
-BANDWIDTH=("500M 400M") # BANDWIDTH de 100% e 80%
+BANDWIDTH=("100M" "80M") # BANDWIDTH de 100% e 80%
 RESULT_DIR="resultados_teste_udp"
 OUTPUT_SCRIPT="comandos/comandos_iperf_udp.sh"
 
@@ -24,7 +24,6 @@ for banda in "${BANDWIDTH[@]}"; do
       
       # Escreve (anexa) o comando gerado no arquivo de saída
       echo "${COMANDO}" >> "${OUTPUT_SCRIPT}"
-      echo "sleep 5" >> "${OUTPUT_SCRIPT}"  # Adiciona uma pausa de 5 segundos entre os comandos
     done
   done
 done

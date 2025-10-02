@@ -1,53 +1,15 @@
 #!/bin/bash
 
 # --- Parâmetros ---
-SERVER_IP="192.168.10.1"
+SERVER_IP="192.168.10.2"
 DURATION=30
 REPETITIONS=10
 PACKETS=(128 256 512 1024 1280)
-BANDWIDTH=("500M" "400M") # BANDWIDTH de 100% e 80%
-RESULT_DIR="resultados"
-OUTPUT_SCRIPT="comandos_iperf.sh"
+BANDWIDTH=("500M 400M") # BANDWIDTH de 100% e 80%
+RESULT_DIR="resultados_teste_udp"
+OUTPUT_SCRIPT="comandos/comandos_iperf_udp.sh"
 
-# --- Processa argumentos da linha de comando ---
-# Este laço 'while' verifica e substitui os valores padrão pelos que forem passados
-while [[ $# -gt 0 ]]; do
-  key="$1"
-  case $key in
-    -server_ip)
-      SERVER_IP="$2"
-      shift 2
-      ;;
-    -duration)
-      DURATION="$2"
-      shift 2
-      ;;
-    -repetitions)
-      REPETITIONS="$2"
-      shift 2
-      ;;
-    -packets)
-      # Para arrays, passamos uma string com espaços e a convertemos
-      PACKETS=($2)
-      shift 2
-      ;;
-    -bandwidth)
-      BANDWIDTH=($2)
-      shift 2
-      ;;
-    -path_dir)
-      RESULT_DIR=($2)
-      shift 2
-      ;;
-    *)
-      # argumento desconhecido
-      echo "Argumento desconhecido: $1"
-      exit 1
-      ;;
-  esac
-done
-
-mkdir -p "$RESULT_DIR"
+# mkdir -p "$RESULT_DIR"
 
 # Loop principal para gerar cada linha de comando
 for banda in "${BANDWIDTH[@]}"; do
@@ -62,6 +24,7 @@ for banda in "${BANDWIDTH[@]}"; do
       
       # Escreve (anexa) o comando gerado no arquivo de saída
       echo "${COMANDO}" >> "${OUTPUT_SCRIPT}"
+      echo "sleep 5" >> "${OUTPUT_SCRIPT}"  # Adiciona uma pausa de 5 segundos entre os comandos
     done
   done
 done

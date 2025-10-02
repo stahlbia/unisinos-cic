@@ -1,140 +1,112 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import os
+import numpy as np
 
-# --- Configurações ---
-ARQUIVO_SEM_ROTEADOR = 'tabela_final_sem_roteador.csv'
-ARQUIVO_COM_ROTEADOR = 'tabela_final_com_roteador.csv'
-PASTA_GRAFICOS = 'graficos'
-PACOTES_TESTADOS = [128, 256, 512, 1024, 1280]
+def limpar_e_gerar_graficos():
+    """
+    Função final para carregar, limpar, analisar e gerar os gráficos.
+    """
+    # Nomes dos arquivos CSV de entrada
+    file_com_roteador = 'resultados_com_roteador.csv'
+    file_sem_roteador = 'resultados_sem_roteador.csv'
 
-# Cria a pasta para salvar os gráficos, se ela não existir
-if not os.path.exists(PASTA_GRAFICOS):
-    os.makedirs(PASTA_GRAFICOS)
-
-def carregar_dados():
-    """Carrega os dados dos arquivos CSV para DataFrames do Pandas."""
     try:
-        df_sem_roteador = pd.read_csv(ARQUIVO_SEM_ROTEADOR)
-        df_com_roteador = pd.read_csv(ARQUIVO_COM_ROTEADOR)
+        # Carrega os arquivos CSV
+        print("Carregando arquivos de dados...")
+        df_com_roteador = pd.read_csv(file_com_roteador)
+        df_sem_roteador = pd.read_csv(file_sem_roteador)
+
+        # --- LIMPEZA E CONVERSÃO FORÇADA DE DADOS ---
+        cols_para_converter = [
+            'seconds', 'lost_percent', 'jitter_ms', 'pps', 'bytes_per_sec', 
+            'cpu_percent_host_total', 'cpu_percent_remote_total'
+        ]
+
+        print("\nIniciando a limpeza e conversão de dados...")
+        for df_name, df in [('Com Roteador', df_com_roteador), ('Sem Roteador', df_sem_roteador)]:
+            for col in cols_para_converter:
+                if col in df.columns:
+                    df[col] = df[col].astype(str)
+                    df[col] = df[col].str.replace('.', '', regex=False)
+                    df[col] = df[col].str.replace(',', '.', regex=False)
+                    df[col] = pd.to_numeric(df[col], errors='coerce')
         
-        return df_sem_roteador, df_com_roteador
-    except FileNotFoundError as e:
-        print(f"Erro: Arquivo não encontrado - {e}. Certifique-se de que os arquivos CSV estão na mesma pasta que o script.")
-        return None, None
+        df_com_roteador.fillna(0, inplace=True)
+        df_sem_roteador.fillna(0, inplace=True)
+        print("Limpeza de dados concluída.")
+        
+        # --- ANÁLISE DOS DADOS ---
+        print("\nCalculando médias para cada tamanho de pacote...")
 
-def plotar_vazao_pacotes(df_sem, df_com, banda_str, banda_bps):
-    """Gera e salva o gráfico de Vazão de Pacotes (pps)."""
-    
-    # Filtra os dados para a banda de largura atual
-    dados_sem_r = df_sem[df_sem['banda_alvo'] == banda_str]
-    dados_com_r = df_com[df_com['banda_alvo'] == banda_str]
+        # Adicionado 'numeric_only=True' para que o pandas ignore colunas de texto (como 'bandwidth_arg')
+        # ao calcular a média.
+        avg_com_roteador = df_com_roteador.groupby('size_bytes').mean(numeric_only=True).reset_index()
+        avg_sem_roteador = df_sem_roteador.groupby('size_bytes').mean(numeric_only=True).reset_index()
 
-    # 1. Cálculo da vazão teórica de pacotes
-    vazao_teorica_pps = [banda_bps / (pacote * 8) for pacote in PACOTES_TESTADOS]
+        # --- CÁLCULO DA VAZÃO TEÓRICA ---
+        link_speed_bps = 1e9
+        ethernet_overhead = 39
+        packet_sizes_bytes = avg_sem_roteador['size_bytes']
+        frame_sizes_bytes = packet_sizes_bytes + ethernet_overhead
+        theoretical_pps = link_speed_bps / (frame_sizes_bytes * 8)
+        theoretical_bps = (link_speed_bps * (packet_sizes_bytes / frame_sizes_bytes)) / 8
 
-    plt.figure(figsize=(12, 7))
-    
-    # 2. Plotar as curvas
-    plt.plot(PACOTES_TESTADOS, vazao_teorica_pps, label='Teórico', linestyle='--', marker='x', color='red')
-    plt.plot(dados_sem_r['tamanho_pacote'], dados_sem_r['pacotes_ps_mean'], label='Sem Roteador', marker='o', color='blue')
-    plt.plot(dados_com_r['tamanho_pacote'], dados_com_r['pacotes_ps_mean'], label='Com Roteador', marker='s', color='green')
+        # --- GERAÇÃO DOS GRÁFICOS ---
+        print("\nGerando gráficos...")
+        
+        # Gráfico 1: Vazão de Pacotes
+        plt.figure(figsize=(12, 7))
+        plt.plot(avg_com_roteador['size_bytes'], avg_com_roteador['pps'], marker='o', linestyle='-', label='Com Roteador (Experimental)')
+        plt.plot(avg_sem_roteador['size_bytes'], avg_sem_roteador['pps'], marker='s', linestyle='-', label='Sem Roteador (Experimental)')
+        plt.plot(packet_sizes_bytes, theoretical_pps, marker='x', linestyle='--', color='k', label='Teórico (Rede 1 Gbit/s)')
+        plt.title('Gráfico 1: Vazão de Pacotes na Rede', fontsize=16)
+        plt.xlabel('Tamanho do Pacote (bytes)', fontsize=12)
+        plt.ylabel('Pacotes por Segundo (pps)', fontsize=12)
+        plt.grid(True, which="both", ls="--")
+        plt.legend()
+        plt.xscale('log')
+        plt.yscale('log')
+        plt.savefig('vazao_pacotes.png')
+        plt.close()
+        print("- 'vazao_pacotes.png' salvo.")
 
-    # 3. Configurações do gráfico
-    plt.title(f'Vazão de Pacotes (pps) x Tamanho do Pacote\nBanda Alvo: {banda_str}')
-    plt.xlabel('Tamanho do Pacote (Bytes)')
-    plt.ylabel('Vazão (Pacotes por Segundo)')
-    plt.xticks(PACOTES_TESTADOS)
-    plt.grid(True, which='both', linestyle='--', linewidth=0.5)
-    plt.legend()
-    plt.tight_layout()
+        # Gráfico 2: Vazão de Bytes
+        plt.figure(figsize=(12, 7))
+        plt.plot(avg_com_roteador['size_bytes'], avg_com_roteador['bytes_per_sec'], marker='o', linestyle='-', label='Com Roteador (Experimental)')
+        plt.plot(avg_sem_roteador['size_bytes'], avg_sem_roteador['bytes_per_sec'], marker='s', linestyle='-', label='Sem Roteador (Experimental)')
+        plt.plot(packet_sizes_bytes, theoretical_bps, marker='x', linestyle='--', color='k', label='Teórico (Rede 1 Gbit/s)')
+        plt.title('Gráfico 2: Vazão de Bytes na Rede', fontsize=16)
+        plt.xlabel('Tamanho do Pacote (bytes)', fontsize=12)
+        plt.ylabel('Bytes por Segundo (Bps)', fontsize=12)
+        plt.grid(True, which="both", ls="--")
+        plt.legend()
+        plt.xscale('log')
+        plt.savefig('vazao_bytes.png')
+        plt.close()
+        print("- 'vazao_bytes.png' salvo.")
 
-    # 4. Salvar o arquivo
-    nome_arquivo = os.path.join(PASTA_GRAFICOS, f'vazao_pacotes_{banda_str}.png')
-    plt.savefig(nome_arquivo)
-    plt.close()
-    print(f"Gráfico salvo: {nome_arquivo}")
+        # Gráfico 3: Utilização da CPU
+        avg_com_roteador['cpu_total'] = avg_com_roteador['cpu_percent_host_total'] + avg_com_roteador['cpu_percent_remote_total']
+        avg_sem_roteador['cpu_total'] = avg_sem_roteador['cpu_percent_host_total'] + avg_sem_roteador['cpu_percent_remote_total']
+        plt.figure(figsize=(12, 7))
+        plt.plot(avg_com_roteador['size_bytes'], avg_com_roteador['cpu_total'], marker='o', linestyle='-', label='Com Roteador')
+        plt.plot(avg_sem_roteador['size_bytes'], avg_sem_roteador['cpu_total'], marker='s', linestyle='-', label='Sem Roteador')
+        plt.title('Gráfico 3: Utilização da CPU vs. Tamanho do Pacote', fontsize=16)
+        plt.xlabel('Tamanho do Pacote (bytes)', fontsize=12)
+        plt.ylabel('Utilização Total da CPU (%)', fontsize=12)
+        plt.grid(True, which="both", ls="--")
+        plt.legend()
+        plt.xscale('log')
+        plt.savefig('utilizacao_cpu.png')
+        plt.close()
+        print("- 'utilizacao_cpu.png' salvo.")
+        
+        print("\nAnálise concluída com sucesso!")
 
-def plotar_vazao_bytes(df_sem, df_com, banda_str, banda_bps):
-    """Gera e salva o gráfico de Vazão de Bytes (bps)."""
-    
-    dados_sem_r = df_sem[df_sem['banda_alvo'] == banda_str]
-    dados_com_r = df_com[df_com['banda_alvo'] == banda_str]
-
-    plt.figure(figsize=(12, 7))
-    
-    # 1. Curva teórica (linha horizontal)
-    plt.axhline(y=banda_bps, label=f'Teórico ({banda_str})', linestyle='--', color='red')
-    
-    # 2. Curvas experimentais
-    plt.plot(dados_sem_r['tamanho_pacote'], dados_sem_r['vazao_bps_mean'], label='Sem Roteador', marker='o', color='blue')
-    plt.plot(dados_com_r['tamanho_pacote'], dados_com_r['vazao_bps_mean'], label='Com Roteador', marker='s', color='green')
-
-    # 3. Configurações do gráfico
-    plt.title(f'Vazão de Bytes (bps) x Tamanho do Pacote\nBanda Alvo: {banda_str}')
-    plt.xlabel('Tamanho do Pacote (Bytes)')
-    plt.ylabel('Vazão (Bits por Segundo)')
-    plt.xticks(PACOTES_TESTADOS)
-    plt.ylim(bottom=0, top=banda_bps * 1.1) # Ajusta o limite do eixo Y
-    plt.grid(True, which='both', linestyle='--', linewidth=0.5)
-    plt.legend()
-    plt.tight_layout()
-
-    # 4. Salvar o arquivo
-    nome_arquivo = os.path.join(PASTA_GRAFICOS, f'vazao_bytes_{banda_str}.png')
-    plt.savefig(nome_arquivo)
-    plt.close()
-    print(f"Gráfico salvo: {nome_arquivo}")
-
-def plotar_uso_cpu(df_sem, df_com, banda_str):
-    """Gera e salva o gráfico de Uso de CPU (%)."""
-    
-    dados_sem_r = df_sem[df_sem['banda_alvo'] == banda_str]
-    dados_com_r = df_com[df_com['banda_alvo'] == banda_str]
-
-    plt.figure(figsize=(12, 7))
-    
-    # Plotar as 4 curvas de CPU
-    plt.plot(dados_sem_r['tamanho_pacote'], dados_sem_r['cpu_cliente_%_mean'], label='CPU Cliente (Sem Roteador)', marker='o', linestyle=':', color='cyan')
-    plt.plot(dados_sem_r['tamanho_pacote'], dados_sem_r['cpu_servidor_%_mean'], label='CPU Servidor (Sem Roteador)', marker='o', color='blue')
-    plt.plot(dados_com_r['tamanho_pacote'], dados_com_r['cpu_cliente_%_mean'], label='CPU Cliente (Com Roteador)', marker='s', linestyle=':', color='lime')
-    plt.plot(dados_com_r['tamanho_pacote'], dados_com_r['cpu_servidor_%_mean'], label='CPU Servidor (Com Roteador)', marker='s', color='green')
-
-    # Configurações do gráfico
-    plt.title(f'Uso de CPU (%) x Tamanho do Pacote\nBanda Alvo: {banda_str}')
-    plt.xlabel('Tamanho do Pacote (Bytes)')
-    plt.ylabel('Uso de CPU (%)')
-    plt.xticks(PACOTES_TESTADOS)
-    plt.ylim(bottom=0)
-    plt.grid(True, which='both', linestyle='--', linewidth=0.5)
-    plt.legend()
-    plt.tight_layout()
-
-    # Salvar o arquivo
-    nome_arquivo = os.path.join(PASTA_GRAFICOS, f'uso_cpu_{banda_str}.png')
-    plt.savefig(nome_arquivo)
-    plt.close()
-    print(f"Gráfico salvo: {nome_arquivo}")
-
-
-def main():
-    """Função principal para orquestrar a geração de gráficos."""
-    df_sem_roteador, df_com_roteador = carregar_dados()
-    
-    if df_sem_roteador is None or df_com_roteador is None:
-        return
-
-    # Define as bandas de largura testadas para iterar
-    bandas = {
-        '1000M': 1_000_000_000, # 100% de 1 Gbit/s
-        '800M': 800_000_000     # 80% de 1 Gbit/s
-    }
-
-    for banda_str, banda_bps in bandas.items():
-        print(f"\n--- Gerando gráficos para a banda de {banda_str} ---")
-        plotar_vazao_pacotes(df_sem_roteador, df_com_roteador, banda_str, banda_bps)
-        plotar_vazao_bytes(df_sem_roteador, df_com_roteador, banda_str, banda_bps)
-        plotar_uso_cpu(df_sem_roteador, df_com_roteador, banda_str)
+    except FileNotFoundError:
+        print(f"\nERRO: Arquivos não encontrados!")
+    except Exception as e:
+        print(f"\nOcorreu um erro inesperado: {e}")
 
 if __name__ == '__main__':
-    main()
+    limpar_e_gerar_graficos()

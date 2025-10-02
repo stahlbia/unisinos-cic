@@ -4,7 +4,6 @@
 SERVER_IP="192.168.10.1"
 USER_HOST="root"
 IPERF_PORT="5201"
-SSH_PORT="2222"
 DURATION=30 # segundos
 REPETITIONS=10
 PACKETS=(128 256 512 1024 1280)
@@ -25,10 +24,6 @@ while [[ $# -gt 0 ]]; do
       ;;
     -iperf_port)
       IPERF_PORT="$2"
-      shift 2
-      ;;
-    -ssh_port)
-      SSH_PORT="$2"
       shift 2
       ;;
     -duration)
@@ -55,8 +50,6 @@ while [[ $# -gt 0 ]]; do
       ;;
   esac
 done
-
-SERVER_USER_HOST="$USER_HOST@$SERVER_IP"
 
 # Diretório para salvar os resultados locais e remotos
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")

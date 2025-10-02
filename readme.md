@@ -8,7 +8,7 @@ Antes de iniciar os testes, garanta que o ambiente esteja configurado corretamen
 
 ### 1.1 Criando os containers com o Dockerfile
 
-Para criar os containers com o Dockerfile é preciso primeiro criar a imagem de cada container em sua respectiva máquina. Para isso, dê um comando `cd micro-x` para entrar na pasta com o Dockerfile, e execute `docker build -t nome-ambiente .`. Para iniciar o container rode o comando `docker run -itd --name micro-x -p 5201:5201 -p 2222:22 --privileged nome-ambiente`, e para executar o container rode o comando `docker exec -it micro-x /bin/bash`.
+Para criar os containers com o Dockerfile é preciso primeiro criar a imagem de cada container em sua respectiva máquina. Para isso, dê um comando `cd micro-x` para entrar na pasta com o Dockerfile, e execute `docker build -t nome-ambiente .`. Para iniciar o container rode o comando `docker run -itd --name micro-x -p 5201:5201/tcp -p 5201:5201/udp --privileged nome-ambiente`, e para executar o container rode o comando `docker exec -it micro-x /bin/bash`.
 
 #### 1.1.1 Dockerfile
 
@@ -39,30 +39,11 @@ O IP que será utilizado nos testes é o IP da rede da máquina física, ou seja
 
 #### MacOS
 
-`ifconfig | grep "inet "` -> para pegar o valor do ip (169.254.225.132)
+`ifconfig | grep "inet "` -> para pegar o valor do ip (169.254.154.244)
 
 #### Windows 11
 
 `ipconfig` -> pegar o Endereço IPv4 do Adaptador Ethernet Ethernet (169.254.7.56)
-
-#### 1.2.1 Configurando o ssh: Micro A
-
-O micro A irá trabalhar como o servidor, para isso será necessário usar ssh para o outro container conseguir buscar algumas informações, para isso, dentro do container micro A, execute os seguintes comandos:
-
-- `mkdir /run/sshd`
-- `/usr/sbin/sshd`
-- `passwd` -> crie uma senha simples como "root"
-- `nano /etc/ssh/sshd_config` -> encontre a linha que diz "#PermitRootLogin prohibit-password" e troque por "PermitRootLogin yes".
-- `kill $(pgrep sshd)`
-- `/usr/sbin/sshd`
-- `ps aux | grep sshd` -> verificar se o serviço tá on
-
-#### 1.2.2 Configurando o ssh: Micro B
-
-O micro B irá trabalhar como o cliente, para isso será necessário instalar e configurar uma chave ssh (faça os passos do micro A antes disso):
-
-- `ssh-keygen -t rsa`
-- `ssh-copy-id -p 2222 root@{IP_MICRO_A}` -> a senha é a mesma configurada no micro A
 
 ### 1.3 Cenários de testes
 
@@ -98,12 +79,11 @@ OBS1: O script pode ser executado com parâmetros para mudar algumas informaçõ
 - `-server_ip`: passa o IP do Micro A
 - `-user_host`: passo o nome de usuário do Micro A (normalmente é "root")
 - `-iperf_port`: porta na qual o iperf3 foi programado para rodar (default=5201)
-- `-ssh_port`: porta na qual o ssh for programado para conectar (default=2222)
 - `-duration`: tempo que cada execução levará em segundos
 - `-repetitions`: quantidade de vezes que cada test-case será repetido
 - `-packets`: tamanhos dos pacotes que serão testados
 - `-bandwidth`: tamanhos de banda que serão testados
-- exemplo: `./executar_testes.sh -server_ip 169.254.225.132 -user_host root -iperf_port 5210 -ssh_port 2222 -duration 30 -repetitions 10 -packets "128 256 512 1024 1280" -bandwidth "800M 1000M"`
+- exemplo: `./executar_testes.sh -server_ip 169.254.225.132 -user_host root -iperf_port 5210 -duration 30 -repetitions 10 -packets "128 256 512 1024 1280" -bandwidth "800M 1000M"`
 
 OBS2: Como são vários test cases, o script irá demorar cerca de 45 min para rodar completamente.
 

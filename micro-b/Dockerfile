@@ -12,13 +12,10 @@ RUN apt-get update && apt-get install -y \
     iproute2 \
     iperf3 \
     sysstat \
-    openssh-client \
     python3 \
     python3-pip \
     python3-venv
 
-# Expõe a porta 22 para permitir conexões SSH externas
-EXPOSE 22
 # Expõe a porta 5201, padrão do iperf3, para testes de rede
 EXPOSE 5201
 

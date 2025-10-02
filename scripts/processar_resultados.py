@@ -30,7 +30,7 @@ def extrair_dados_iperf(json_data, size_bytes, bandwidth_arg, run):
         return None
 
 # --- Script principal ---
-diretorio = "resultados_com_roteador"
+diretorio = "resultados_sem_roteador"
 todos_os_dados = []
 padrao_nome_arquivo = re.compile(r"result_(\d+)_([\w\d]+)_run(\d+)")
 

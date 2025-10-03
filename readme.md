@@ -89,6 +89,10 @@ OBS2: Como são vários test cases, o script irá demorar cerca de 45 min para r
 
 OBS3: Rode o script uma vez para cada cenário de teste.
 
+### 2.3 Outro método
+
+Outro método que pode ser utilizado é o script `gerar_comandos_iperf.sh`, que gera um segundo Shell script com uma lista de todos os comandos do iperf3.
+
 ## 3 Processamento dos Dados
 
 Agora com todas as informações dos testes, a melhor maneira de processar todos os dados é através de um script, nesse caso será em Python, utilizando a biblioteca `pandas`. Para isso, crie um ambiente python através dos comandos:

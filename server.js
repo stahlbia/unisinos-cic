@@ -74,15 +74,61 @@ app.post('/api/subscribe', async (req, res) => {
       }
     }
 
-    // Subscribe user
+    // Subscribe user to database
     const result = await db.subscribeUser(email, topics);
+    
+    // Subscribe user to actual AWS SNS topics
+    const snsSubscriptions = [];
+    const snsErrors = [];
+    
+    for (const topic of topics) {
+      try {
+        const topicArn = newsletterService.getTopicArn(topic);
+        
+        if (newsletterService.hasValidTopicArn(topic)) {
+          const snsSubscription = await newsletterService.subscribeEmailToSNS(topicArn, email);
+          snsSubscriptions.push({
+            topic,
+            topicArn,
+            subscriptionArn: snsSubscription,
+            status: 'subscribed'
+          });
+          console.log(`Successfully subscribed ${email} to SNS topic ${topic}`);
+        } else {
+          snsSubscriptions.push({
+            topic,
+            topicArn,
+            status: 'simulated',
+            note: 'SNS not configured - subscription simulated'
+          });
+          console.log(`SNS not configured for topic ${topic} - subscription simulated for ${email}`);
+        }
+      } catch (error) {
+        console.error(`Failed to subscribe ${email} to SNS topic ${topic}:`, error);
+        snsErrors.push({
+          topic,
+          error: error.message
+        });
+        // Continue with other topics even if one fails
+      }
+    }
+    
     metricsService.trackSubscription(topics);
     
-    res.json({ 
+    const response = { 
       message: 'Successfully subscribed to topics',
       subscriptionId: result.subscriptionId,
-      topics: topics
-    });
+      topics: topics,
+      snsSubscriptions,
+      status: snsErrors.length === 0 ? 'success' : 'partial_success'
+    };
+    
+    if (snsErrors.length > 0) {
+      response.snsErrors = snsErrors;
+      response.warning = 'Some SNS subscriptions failed but database subscription succeeded';
+    }
+    
+    res.json(response);
   } catch (error) {
     console.error('Error subscribing user:', error);
     res.status(500).json({ error: 'Failed to subscribe user' });
@@ -99,12 +145,22 @@ app.post('/api/unsubscribe', async (req, res) => {
       return res.status(400).json({ error: emailValidation.error.details[0].message });
     }
 
+    // Unsubscribe from database
     const result = await db.unsubscribeUser(email, topics);
+    
+    // Note: AWS SNS unsubscription is more complex as it requires subscription ARNs
+    // For now, we'll track the unsubscription but SNS cleanup would need to be done
+    // through AWS console or by storing subscription ARNs in the database
+    const response = {
+      message: topics ? 'Successfully unsubscribed from specified topics' : 'Successfully unsubscribed from all topics',
+      email,
+      topics: topics || 'all',
+      note: 'Database unsubscription completed. SNS subscriptions may need manual cleanup via AWS console.'
+    };
+    
     metricsService.trackUnsubscription(topics || []);
     
-    res.json({ 
-      message: topics ? 'Successfully unsubscribed from specified topics' : 'Successfully unsubscribed from all topics'
-    });
+    res.json(response);
   } catch (error) {
     console.error('Error unsubscribing user:', error);
     res.status(500).json({ error: 'Failed to unsubscribe user' });
@@ -132,16 +188,23 @@ app.get('/api/subscriptions/:email', async (req, res) => {
 // Admin endpoint to send newsletter
 app.post('/api/admin/send-newsletter', async (req, res) => {
   try {
-    const { topic, subject, content } = req.body;
+    const { topics, subject, content } = req.body;
     
-    // Validate input (no longer requires senderEmail)
-    if (!topic || !subject || !content) {
-      return res.status(400).json({ error: 'Topic, subject, and content are required' });
+    // Support both single topic (backward compatibility) and multiple topics
+    const topicList = topics ? (Array.isArray(topics) ? topics : [topics]) 
+                             : (req.body.topic ? [req.body.topic] : null);
+    
+    // Validate input
+    if (!topicList || !subject || !content) {
+      return res.status(400).json({ error: 'Topics (or topic), subject, and content are required' });
     }
 
-    const topicValidation = validateTopic(topic);
-    if (topicValidation.error) {
-      return res.status(400).json({ error: topicValidation.error.details[0].message });
+    // Validate each topic
+    for (const topic of topicList) {
+      const topicValidation = validateTopic(topic);
+      if (topicValidation.error) {
+        return res.status(400).json({ error: `Invalid topic: ${topic}` });
+      }
     }
 
     if (subject.trim().length < 1 || subject.length > 200) {
@@ -152,34 +215,46 @@ app.post('/api/admin/send-newsletter', async (req, res) => {
       return res.status(400).json({ error: 'Content must be between 10 and 10,000 characters' });
     }
 
-    // Get subscribers for the topic
-    const subscribers = await db.getSubscribersByTopic(topic);
+    // Get all subscribers for the specified topics (avoiding duplicates)
+    const allSubscribers = new Set();
+    const topicSubscriberCounts = {};
     
-    if (subscribers.length === 0) {
+    for (const topic of topicList) {
+      const subscribers = await db.getSubscribersByTopic(topic);
+      topicSubscriberCounts[topic] = subscribers.length;
+      subscribers.forEach(email => allSubscribers.add(email));
+    }
+    
+    const uniqueSubscribers = Array.from(allSubscribers);
+    
+    if (uniqueSubscribers.length === 0) {
       return res.json({ 
-        message: 'No subscribers found for this topic',
-        topic,
-        subscriberCount: 0
+        message: 'No subscribers found for the specified topics',
+        topics: topicList,
+        topicSubscriberCounts,
+        uniqueSubscriberCount: 0
       });
     }
 
     // Send newsletter (AWS SNS handles sender info)
     const result = await newsletterService.sendNewsletter({
-      topic,
+      topics: topicList,
       subject,
       content,
-      subscribers
+      subscribers: uniqueSubscribers
     });
 
-    metricsService.trackNewsletterSent(topic, subscribers.length);
+    // Track metrics for each topic
+    topicList.forEach(topic => {
+      metricsService.trackNewsletterSent(topic, topicSubscriberCounts[topic]);
+    });
     
     res.json({
       message: 'Newsletter sent successfully',
-      topic,
-      subscriberCount: subscribers.length,
-      messageId: result.messageId,
-      status: result.status,
-      topicArn: result.topicArn
+      topics: topicList,
+      topicSubscriberCounts,
+      uniqueSubscriberCount: uniqueSubscribers.length,
+      result
     });
   } catch (error) {
     console.error('Error sending newsletter:', error);

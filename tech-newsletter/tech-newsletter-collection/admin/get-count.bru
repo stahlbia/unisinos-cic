@@ -1,0 +1,11 @@
+meta {
+  name: get-count
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://{{host}}/api/admin/subscribers/count
+  body: none
+  auth: none
+}

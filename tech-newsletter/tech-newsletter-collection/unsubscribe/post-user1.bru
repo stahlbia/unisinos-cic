@@ -1,0 +1,18 @@
+meta {
+  name: post-user1
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://{{host}}/api/unsubscribe
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "ana.beatriz.stahl+user1@gmail.com",
+    "topics": ["ai", "backend"]
+  }
+}

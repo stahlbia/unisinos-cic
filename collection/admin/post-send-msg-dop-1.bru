@@ -1,0 +1,19 @@
+meta {
+  name: post-send-msg-dop-1
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://{{host}}/api/admin/send-newsletter
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "topics": ["devops"],
+    "subject": "DEVOPS NEWS",
+    "content": "hello, here is the news about the DEVOPS area"
+  }
+}

@@ -264,10 +264,32 @@ app.post('/api/admin/send-newsletter', async (req, res) => {
 });
 
 // Get service metrics
-app.get('/api/metrics', (req, res) => {
+app.get('/api/metrics', async (req, res) => {
   try {
-    const metrics = metricsService.getMetrics();
-    res.json(metrics);
+    const hours = parseInt(req.query.hours) || null; // Allow filtering by hours, default to all
+    
+    // Get in-memory metrics (current session)
+    const currentSessionMetrics = metricsService.getMetrics();
+    
+    // Get database metrics (all historical data)
+    const databaseMetrics = await metricsService.getDatabaseMetrics(hours);
+    
+    // Combine both in-memory and database metrics
+    const combinedMetrics = {
+      current_session: {
+        ...currentSessionMetrics,
+        note: 'Metrics since last server restart'
+      },
+      historical: databaseMetrics,
+      combined_summary: {
+        note: hours ? 
+          `Combined metrics for the last ${hours} hours` : 
+          'Combined metrics for all time',
+        timestamp: new Date().toISOString()
+      }
+    };
+    
+    res.json(combinedMetrics);
   } catch (error) {
     console.error('Error fetching metrics:', error);
     res.status(500).json({ error: 'Failed to fetch metrics' });
@@ -322,6 +344,10 @@ async function startServer() {
   try {
     await db.initialize();
     console.log('Database initialized successfully');
+    
+    // Initialize metrics service
+    await metricsService.initialize();
+    console.log('Metrics service initialized successfully');
     
     app.listen(PORT, () => {
       console.log(`Tech Newsletter Service running on port ${PORT}`);

@@ -19,27 +19,38 @@ class NewsletterService {
   }
 
   isValidTopic(topic) {
-    return this.availableTopics.includes(topic.toLowerCase());
+    return this.availableTopics.includes(topic);
   }
 
-  async sendNewsletter({ topic, subject, content, subscribers }) {
+  async sendNewsletter({ topics, topic, subject, content, subscribers }) {
     try {
+      // Support both topics (array) and topic (single) for backward compatibility
+      const topicList = topics || (topic ? [topic] : null);
+      
+      if (!topicList || topicList.length === 0) {
+        throw new Error('No topics provided');
+      }
+
+      // For multiple topics, we'll send to the first topic (main behavior)
+      // or we can modify this to handle multiple topics differently
+      const primaryTopic = Array.isArray(topicList) ? topicList[0] : topicList;
+
       // Validate topic
-      if (!this.isValidTopic(topic)) {
-        throw new Error(`Invalid topic: ${topic}. Available topics: ${this.availableTopics.join(', ')}`);
+      if (!this.isValidTopic(primaryTopic)) {
+        throw new Error(`Invalid topic: ${primaryTopic}. Available topics: ${this.availableTopics.join(', ')}`);
       }
 
       // Create the email message
-      const message = this.formatEmailMessage(topic, subject, content);
+      const message = this.formatEmailMessage(primaryTopic, subject, content);
 
       // SNS message parameters
       const params = {
         Message: message,
-        Subject: `${this.getTopicDisplayName(topic)} Newsletter: ${subject}`,
+        Subject: `${this.getTopicDisplayName(primaryTopic)} Newsletter: ${subject}`,
         MessageAttributes: {
           'topic': {
             DataType: 'String',
-            StringValue: topic
+            StringValue: primaryTopic
           },
           'subscriber_count': {
             DataType: 'Number',
@@ -49,12 +60,13 @@ class NewsletterService {
       };
 
       // Get the appropriate SNS topic ARN for this newsletter topic
-      const topicArn = this.getTopicArn(topic);
+      const topicArn = this.getTopicArn(primaryTopic);
       
-      if (process.env.NODE_ENV === 'development' || !this.hasValidTopicArn(topic)) {
+      if (process.env.NODE_ENV === 'development' || !this.hasValidTopicArn(primaryTopic)) {
         // In development mode or when SNS is not configured, simulate sending
         console.log('DEVELOPMENT MODE - Newsletter would be sent with:');
-        console.log('Topic:', topic);
+        console.log('Topic:', primaryTopic);
+        console.log('All topics:', topicList);
         console.log('Topic ARN:', topicArn);
         console.log('Subject:', params.Subject);
         console.log('Subscribers count:', subscribers.length);
@@ -62,7 +74,8 @@ class NewsletterService {
         
         return {
           messageId: `dev-${Date.now()}`,
-          topic,
+          topic: primaryTopic,
+          topics: topicList,
           subscriberCount: subscribers.length,
           status: 'simulated',
           topicArn
@@ -73,12 +86,13 @@ class NewsletterService {
       params.TopicArn = topicArn;
       const result = await this.sns.publish(params).promise();
 
-      console.log(`Newsletter sent successfully for topic ${topic}:`, result.MessageId);
+      console.log(`Newsletter sent successfully for topic ${primaryTopic}:`, result.MessageId);
       console.log(`Delivered to ${subscribers.length} subscribers via SNS topic: ${topicArn}`);
       
       return {
         messageId: result.MessageId,
-        topic,
+        topic: primaryTopic,
+        topics: topicList,
         subscriberCount: subscribers.length,
         status: 'sent',
         topicArn
@@ -92,7 +106,8 @@ class NewsletterService {
         console.log('AWS SNS not configured - simulating newsletter send');
         return {
           messageId: `sim-${Date.now()}`,
-          topic,
+          topic: topics?.[0] || topic,
+          topics: topics || [topic],
           subscriberCount: subscribers.length,
           status: 'simulated',
           note: 'AWS SNS not configured - newsletter sending simulated'

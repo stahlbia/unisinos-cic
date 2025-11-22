@@ -212,15 +212,28 @@ class Database {
     });
   }
 
-  async getMetrics(hours = 24) {
+  async getMetrics(hours = null) {
     return new Promise((resolve, reject) => {
-      const query = `
-        SELECT metric_type, COUNT(*) as count, MAX(timestamp) as last_occurrence
-        FROM metrics 
-        WHERE timestamp >= datetime('now', '-${hours} hours')
-        GROUP BY metric_type
-        ORDER BY count DESC
-      `;
+      let query;
+      
+      if (hours) {
+        // Get metrics for specific time period
+        query = `
+          SELECT metric_type, COUNT(*) as count, MAX(timestamp) as last_occurrence
+          FROM metrics 
+          WHERE timestamp >= datetime('now', '-${hours} hours')
+          GROUP BY metric_type
+          ORDER BY count DESC
+        `;
+      } else {
+        // Get all historical metrics
+        query = `
+          SELECT metric_type, COUNT(*) as count, MAX(timestamp) as last_occurrence
+          FROM metrics 
+          GROUP BY metric_type
+          ORDER BY count DESC
+        `;
+      }
       
       this.db.all(query, [], (err, rows) => {
         if (err) {

@@ -1,21 +1,93 @@
-# GitHub Unisinos
+# Processamento Gráfico: Computação Gráfica e Aplicações 2026/1
 
-Repositório dedicado para guardar os arquivos e projetos de aula, sejam eles algoritmos de programação ou documentos.
+Este repositório contém exemplos e códigos utilizados na disciplina de **Processamento Gráfico: Computação Gráfica e Aplicações** do curso Ciência da Computação da Unisinos. Ele é estruturado para facilitar a organização dos arquivos e a compilação dos projetos utilizando CMake.
 
-## Como clonar o repositório
+## 📂 Estrutura do Repositório
 
-Para clonar apenas a branch main do repositório é só rodar o comando:
-
-``` sh
-git clone --depth 1 --single-branch --branch main https://github.com/stahlbia/unisinos-cic.git
+```plaintext
+📂 CG-20261/
+├── 📂 include/               # Cabeçalhos e bibliotecas de terceiros
+│   ├── 📂 glad/              # Cabeçalhos da GLAD (OpenGL Loader)
+│   │   ├── glad.h
+│   │   ├── 📂 KHR/           # Diretório com cabeçalhos da Khronos (GLAD)
+│   │       ├── khrplatform.h
+├── 📂 common/                # Código reutilizável entre os projetos
+│   ├── glad.c                # Implementação da GLAD
+├── 📂 src/                   # Código-fonte dos exemplos e exercícios
+│   ├── 📂 HelloTriangle/     # Exemplo básico de renderização com OpenGL
+│   └── ...                   # Outros exemplos e exercícios futuros
+├── 📂 build/                 # Diretório gerado pelo CMake (não incluído no repositório)
+├── 📄 CMakeLists.txt         # Configuração do CMake para compilar os projetos
+├── 📄 README.md              # Este arquivo, com a documentação do repositório
+├── 📄 GettingStarted.md      # Tutorial detalhado sobre como compilar usando o CMake
+├── 📄 ...
 ```
 
-## Organização de arquivos
+Siga as instruções detalhadas em [GettingStarted.md](GettingStarted.md) para configurar e compilar o projeto.
 
-A ideia é ter uma pasta para cada cadeira/disciplina cursada, onde lá irá constar todos os arquivos da mesma. As pastas não precisam indicar o semestre no qual a disciplina foi cursada, mas é interessante adicionar um arquivo readme.md (como este) para identificar as informações em relação a isso.
+## ⚠️ **IMPORTANTE: Baixar a GLAD Manualmente**
+Para que o projeto funcione corretamente, é necessário **baixar a GLAD manualmente** utilizando o **GLAD Generator**.
 
-## Como rodar projetos Java
+### 🔗 **Acesse o web service do GLAD**:
+👉 [GLAD Generator](https://glad.dav1d.de/)
 
-## Como rodar projetos C++
+### ⚙️ **Configuração necessária:**
+- **API:** OpenGL  
+- **Version:** 3.3+ (ou superior compatível com sua máquina)  
+- **Profile:** Core  
+- **Language:** C/C++  
 
-Através do VS Code é só baixar a extenção para C/C++ e usar uma gcc para poder compilar o código
+### 📥 **Baixe e extraia os arquivos:**
+Após a geração, extraia os arquivos baixados e coloque-os nos diretórios correspondentes:
+- Copie **`glad.h`** para `include/glad/`
+- Copie **`khrplatform.h`** para `include/glad/KHR/`
+- Copie **`glad.c`** para `common/`
+
+🚨 **Sem esses arquivos, a compilação falhará!** É necessário colocar esses arquivos nos diretórios corretos, conforme a orientação acima.
+
+---
+
+## 📚 Sugestão de Estrutura para seu próprio repositório
+
+Recomendamos que você crie um repositório próprio, estruturado com subdiretórios dentro de `src`, para organizar suas atividades da disciplina:
+
+```
+📁 myCG-20261/
+├── 📁 src/
+│ ├── 📁 Lista1/
+│ │ ├── 📁 Ex1/
+│ │ │ └── main.cpp
+│ │ ├── 📁 Ex2/
+│ │ │ └── main.cpp
+│ │ ├── 📁 Ex3/
+│ │ │ └── main.cpp
+│ │ └── README.md
+│ ├── 📁 Lista2/
+│ │ ├── 📁 Ex1/
+│ │ │ └── main.cpp
+│ │ ├── 📁 Ex2/
+│ │ │ └── main.cpp
+│ │ ├── 📁 Ex3/
+│ │ │ └── main.cpp
+│ │ └── README.md
+│ ├── 📁 TrabalhoGrauA/
+│ │ ├── main.cpp
+│ │ ├── Object.cpp
+│ │ ├── Object.h
+│ │ ├── Shader.cpp
+│ │ ├── Shader.h
+│ │ └── README.md
+│ └── ...
+├── 📁 include/ # Cabeçalhos comuns (se necessário)
+├── 📁 common/ # Arquivos comuns (como glad.c)
+├── 📄 CMakeLists.txt
+└── 📄 README.md
+```
+> Você pode alterar a estrutura dos diretórios, mas sempre que o fizer, adicione-os corretamente no CMakelists.txt.
+> Cada diretório dentro de `src/` pode conter um arquivo `README.md` com informações específicas sobre a atividade ou exercício implementado.
+
+Consulte os seguintes materiais para ajuda adicional:
+- [Tutorial de Entregas pelo Github](misc/TutorialEntregasGithub.pdf)
+- [Organizando seu repositório no Github](misc/OrganizandoRepositorioGithub.pdf)
+- [Exemplo de README.md de repositório](misc/Template_README_Repositorio.md)
+- [Exemplo de README.md para cada projeto](misc/Template_README_Projeto.md)

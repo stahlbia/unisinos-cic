@@ -41,7 +41,7 @@ int loadSimpleOBJ(string filePATH, int &nVertices);
 const GLuint WIDTH = 600, HEIGHT = 600;
 
 // Código fonte do Vertex Shader (em GLSL): ainda hardcoded
-const GLchar* vertexShaderSource = R"glsl(#version 450
+const GLchar* vertexShaderSource = R"glsl(#version 410 core
 layout (location = 0) in vec3 position;
 layout (location = 1) in vec3 color;
 layout (location = 2) in vec3 normal;
@@ -61,7 +61,7 @@ scaledNormal = vec3(model * vec4(normal, 1.0));
 )glsl";
 
 // Código fonte do Fragment Shader (em GLSL)
-const GLchar* fragmentShaderSource = R"glsl(#version 450
+const GLchar* fragmentShaderSource = R"glsl(#version 410 core
 in vec4 finalColor;
 in vec3 fragPos;
 in vec3 scaledNormal;
@@ -122,14 +122,14 @@ int main()
 	//Você deve adaptar para a versão do OpenGL suportada por sua placa
 	//Sugestão: comente essas linhas de código para desobrir a versão e
 	//depois atualize (por exemplo: 4.5 com 4 e 5)
-	//glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	//glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	//Essencial para computadores da Apple
-//#ifdef __APPLE__
-//	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-//#endif
+#ifdef __APPLE__
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
 
 	// Criação da janela GLFW
 	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Olá Camera Sintética!", nullptr, nullptr);

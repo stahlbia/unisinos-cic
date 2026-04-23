@@ -1,6 +1,6 @@
 # Exercício Grau A – Seleção e Transformações em Objetos 3D
 
-## Alunos
+## Equipe
 
 - Ana Beatriz Stahl
 
@@ -33,6 +33,7 @@ Os shaders (vertex e fragment) estão embutidos em `main.cpp` como strings GLSL.
 - **Dependências:** GLFW 3.4, GLAD, GLM (baixadas automaticamente via CMake FetchContent)
 - **Compilador:** GCC/MinGW (Windows) ou Clang/GCC (macOS/Linux)
 - **Build system:** CMake 3.10+
+- **Plataforma-alvo:** macOS
 
 ---
 
@@ -94,6 +95,17 @@ Os três modelos carregados são:
 - `Suzanne.obj` — posicionado à esquerda
 - `SuzanneSubdiv1.obj` — posicionado ao centro
 - `Cube.obj` — posicionado à direita
+
+---
+
+## Screenshots / Vídeo de Gameplay
+
+<details>
+  <summary>🎬 Vídeo</summary>
+  
+  ![complete game demo in a video](../../docs/video/complete-demo.mp4)
+
+</details>
 
 ---
 

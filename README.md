@@ -26,19 +26,24 @@ Este repositório contém exemplos e códigos utilizados na disciplina de **Proc
 Siga as instruções detalhadas em [GettingStarted.md](GettingStarted.md) para configurar e compilar o projeto.
 
 ## ⚠️ **IMPORTANTE: Baixar a GLAD Manualmente**
+
 Para que o projeto funcione corretamente, é necessário **baixar a GLAD manualmente** utilizando o **GLAD Generator**.
 
-### 🔗 **Acesse o web service do GLAD**:
+### 🔗 **Acesse o web service do GLAD**
+
 👉 [GLAD Generator](https://glad.dav1d.de/)
 
 ### ⚙️ **Configuração necessária:**
-- **API:** OpenGL  
-- **Version:** 3.3+ (ou superior compatível com sua máquina)  
-- **Profile:** Core  
-- **Language:** C/C++  
+
+- **API:** OpenGL
+- **Version:** 3.3+ (ou superior compatível com sua máquina)
+- **Profile:** Core
+- **Language:** C/C++
 
 ### 📥 **Baixe e extraia os arquivos:**
+
 Após a geração, extraia os arquivos baixados e coloque-os nos diretórios correspondentes:
+
 - Copie **`glad.h`** para `include/glad/`
 - Copie **`khrplatform.h`** para `include/glad/KHR/`
 - Copie **`glad.c`** para `common/`
@@ -51,7 +56,7 @@ Após a geração, extraia os arquivos baixados e coloque-os nos diretórios cor
 
 Recomendamos que você crie um repositório próprio, estruturado com subdiretórios dentro de `src`, para organizar suas atividades da disciplina:
 
-```
+```txt
 📁 myCG-20261/
 ├── 📁 src/
 │ ├── 📁 Lista1/
@@ -83,10 +88,12 @@ Recomendamos que você crie um repositório próprio, estruturado com subdiretó
 ├── 📄 CMakeLists.txt
 └── 📄 README.md
 ```
+
 > Você pode alterar a estrutura dos diretórios, mas sempre que o fizer, adicione-os corretamente no CMakelists.txt.
 > Cada diretório dentro de `src/` pode conter um arquivo `README.md` com informações específicas sobre a atividade ou exercício implementado.
 
 Consulte os seguintes materiais para ajuda adicional:
+
 - [Tutorial de Entregas pelo Github](misc/TutorialEntregasGithub.pdf)
 - [Organizando seu repositório no Github](misc/OrganizandoRepositorioGithub.pdf)
 - [Exemplo de README.md de repositório](misc/Template_README_Repositorio.md)
